@@ -12,8 +12,13 @@ app.use(morgan('dev'));
 app.use(express.json());
 const path = require('path');
 
-const { getlastAntrian, getSisaAntrian, postAntrian, getAntrian, updateAntrian,
-    getNextId } = require('./model/index');
+const { getlastAntrian,
+    getSisaAntrian,
+    postAntrian,
+    getAntrian,
+    updateAntrian,
+    getNextId,
+    antrianPertama } = require('./model/index');
 const { cetakAntrian } = require('./usb.js');
 
 app.get('/', (req, res) => {
@@ -39,62 +44,63 @@ io.on('connection', async (socket) => {
     io.emit('sisa', sisaAntrian.sisa);
     // io.emit('UpdateLoket', "");
     console.log(sisaAntrian.sisa);
-    socket.on('cetak_antri', async (msg) => {
-        let last = await getlastAntrian();
-        let nomor_antri = last.nomor_antri + 1;
-        await postAntrian(nomor_antri);
-        let sisaAntrian = await getSisaAntrian();
-        io.emit('sisa', sisaAntrian.sisa);
-        cetakAntrian(nomor_antri);
-        console.log(last.nomor_antri);
-        console.log('message: ' + msg);
-    });
-    socket.on('UpdateLoket', async (msg) => {
-        try {
-            let sisaAntrian = await getAntrian();
-            data = {
-                L1: sisaAntrian[0].nomor_antri,
-                L2: sisaAntrian[1].nomor_antri,
-                L3: sisaAntrian[2].nomor_antri,
-                L4: sisaAntrian[3].nomor_antri
-            }
-            console.log(data);
-            console.log(sisaAntrian);
-            io.emit('loket', data);
-        } catch (error) {
-            console.log(error);
-        }
+    let sisaLoketAntrian = await getAntrian();
+    sisaLoketAntrian.forEach(element => {
+        console.log(element);
+        io.emit('loket', element.loket, element.nomor_antri);
     });
     socket.on('next_antrian', async (msg) => {
         console.log('next_antrian: ' + msg);
         let nextId = await getNextId();
-        console.log(nextId);
-        let uid = nextId.uid + 1
+        // console.log(nextId);
+        let uid
+        try {
+            if (nextId == undefined) {
+                let id_antrian = await antrianPertama();
+                uid = id_antrian.uid;
+                console.log('UID_antrian: ' + uid);
+            } else {
+                uid = nextId.uid + 1;
+            }
+        } catch (error) {
+            // console.log(error);
+            return
+        }
+        console.log('nextId: ' + uid);
         await updateAntrian(msg, uid);
         let sisaAntrian = await getSisaAntrian();
         io.emit('sisa', sisaAntrian.sisa);
-        try {
-            let sisaAntrian = await getAntrian();
-            data = {
-                L1: sisaAntrian[0].nomor_antri,
-                L2: sisaAntrian[1].nomor_antri,
-                L3: sisaAntrian[2].nomor_antri,
-                L4: sisaAntrian[3].nomor_antri
+        let sisaLoketAntrian = await getAntrian();
+        sisaLoketAntrian.forEach(element => {
+            console.log(element);
+            if (element.loket == msg) {
+                io.emit('loket', element.loket, element.nomor_antri);
+                // io.emit('loket',(msg, element.nomor_antri));
             }
-            console.log(data);
-            console.log(sisaAntrian);
-            if (sisaAntrian == 0) {
-                io.emit('loket', data);
-                console.log('sisaAntrian == 0');
-                return;
-            }
-            // io.emit('loket', data);
-        } catch (error) {
-            console.log(error);
-        }
+
+        });
+        return;
 
     });
+    socket.on('cetak_antri', async (msg) => {
+        let last = await getlastAntrian();
+        console.log(last);
+        let nomor_antri = 0;
+        if (last == undefined) {
+            nomor_antri = 1;
+        } else {
+            nomor_antri = last.nomor_antri + 1;
+        }
+        console.log('nomor_antri: ' + nomor_antri);
+        // let nomor_antri = last.nomor_antri + 1;
+        await postAntrian(nomor_antri);
+        let sisaAntrian = await getSisaAntrian();
+        io.emit('sisa', sisaAntrian.sisa);
+        cetakAntrian(nomor_antri);
+        console.log('message: ' + msg);
+    });
 });
+
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

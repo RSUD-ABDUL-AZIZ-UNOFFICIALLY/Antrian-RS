@@ -22,7 +22,7 @@ const getAntrian = async function () {
     FROM
 	antrian_loket
     WHERE
-	antrian_loket.created_at LIKE '%2022-09-24%' AND
+	antrian_loket.created_at LIKE ? AND
 	antrian_loket.loket IS NOT NULL AND
 	antrian_loket.nomor_antri IN ((SELECT MAX(antrian_loket.nomor_antri) FROM antrian_loket GROUP BY antrian_loket.loket))
     ORDER BY
@@ -61,11 +61,29 @@ LIMIT 1`
     // console.log(result);
     return result[0];
 }
+const antrianPertama = async function () {
+
+    var sql = `SELECT
+    antrian_loket.*
+FROM
+    antrian_loket
+WHERE
+    antrian_loket.created_at LIKE ? AND
+    antrian_loket.nomor_antri = 1
+ORDER BY
+    antrian_loket.nomor_antri ASC
+LIMIT 1`
+    const result = await con.query(sql, [date_now]);
+    // console.log(result);
+    return result[0];
+}
+
 module.exports = {
     getlastAntrian,
     getSisaAntrian,
     getAntrian,
     postAntrian,
     updateAntrian,
-    getNextId
+    getNextId,
+    antrianPertama
 }
