@@ -37,6 +37,7 @@ app.use("/asset/js", express.static('public/js/'));
 app.use("/asset/img", express.static('public/img/'));
 app.use("/asset/css", express.static('public/css/'));
 app.use("/asset/audio", express.static('public/audio/'));
+app.use("/asset/fonts", express.static('public/fonts/'));
 
 io.on('connection', async (socket) => {
     console.log('a user connected');

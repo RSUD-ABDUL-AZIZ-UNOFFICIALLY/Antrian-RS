@@ -6,9 +6,111 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/asset/css/bootstrap-material-design.min.css">
+    <link rel="stylesheet" href="/asset/css/icons.css">
+    <link rel="stylesheet" href="/asset/css/style.css">
 </head>
 
 <body>
+
+    <!-- Loader -->
+    <!-- <div id="preloader"><div id="status"><div class="spinner"></div></div></div> -->
+
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="col-sm-12">
+            <div class="card h-360">
+                <div class="text-center">
+                    <h1 >&nbsp;</h1>
+                    <h1 >RUMAH SAKIT UMUM DAERAH dr. ABDUL AZIZ SINGKAWANG</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- End Navigation Bar-->
+    
+    <div class="wrapper">
+        <div class="container-fluid">
+    
+            <!-- Page-Title -->
+            <!-- <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">RSUD dr. ABDUL AZIZ</h4>
+                    </div>
+                </div>
+            </div> -->
+            <!-- end page title end breadcrumb -->
+
+            <div class="row">
+                <div class="col-md-12 col-xl-6">
+                    <div class="card m-b-30 h-360">
+                        <div class="card-body">
+                            <div class="video-container">
+                                <video id="videos" controls width="580px" height="350px" autoplay loop muted="muted">
+                                    <!-- <source id="video" src="{!! asset('theme/assets/video/video.mp4') !!}" type="video/mp4"> -->
+                                    <source id="video" src="http://192.168.254.108/Videos/pendaftaran.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xl-6">
+                    <div class="card m-b-30 h-360">
+                        <div class="h2 card-header text-white text-center bg-success">
+                            ANTREAN DIPANGGIL
+                        </div>
+                        <div class="card-body"> 
+                            <div class="row">
+                                <div class="col-md-12 col-xl-4">
+                                    <div class="card m-b-30 text-center">
+                                        <div class="h2 card-header text-white bg-success">
+                                            Loket 1
+                                        </div>
+                                        <div class="card-body">
+                                            <h1 id="L1">-</h1>
+                                        </div>
+                                    </div>                                                                     
+                                </div>  
+                                <div class="col-md-12 col-xl-4">
+                                    <div class="card m-b-30 text-center">
+                                        <div class="h2 card-header text-white bg-success">
+                                            Loket 2
+                                        </div>
+                                        <div class="card-body">
+                                            <h1 id="L2">-</h1>
+                                        </div>
+                                    </div>                                                                     
+                                </div>  
+                                <div class="col-md-12 col-xl-4">
+                                    <div class="card m-b-30 text-center">
+                                        <div class="h2 card-header text-white bg-success">
+                                            Loket 3
+                                        </div>
+                                        <div class="card-body">
+                                            <h1 id="L3">-</h1>
+                                        </div>
+                                    </div>                                                                     
+                                </div>  
+                                <div class="col-md-12 col-xl-4">
+                                    <div class="card m-b-30 text-center">
+                                        <div class="h2 card-header text-white bg-success">
+                                            Loket 4
+                                        </div>
+                                        <div class="card-body">
+                                            <h1 id="L4">-</h1>
+                                        </div>
+                                    </div>                                                                     
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1 hidden id="sisa">0</h1>
+<!-- 
     <h1>Loket 1</h1>
     <h1 id="L1">0</h1>
     <h1>Loket 2</h1>
@@ -18,7 +120,14 @@
     <h1>Loket 4</h1>
     <h1 id="L4">0</h1>
     <h1>Sisa Antrian</h1>
-    <h1 id="sisa">0</h1>
+    <h1 id="sisa">0</h1> -->
+
+    
+    <audio id="suaraantrian" src="/asset/audio/suara/nomorantrian.wav"></audio> 
+    <audio id="diloket" src="/asset/audio/suara/loket.wav"></audio> 
+    <audio id="ratus" src="/asset/audio/suara/ratus.wav"></audio> 
+    <audio id="seribu" src="/asset/audio/suara/ribu.wav"></audio>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="/asset/js/tampilan.js"></script>
 
