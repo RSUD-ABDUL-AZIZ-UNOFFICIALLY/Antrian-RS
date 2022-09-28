@@ -11,3 +11,8 @@ function cetak() {
     console.log('cetak');
     socket.emit("cetak_antri", "cetak tiket");
 }
+
+function play() {
+    var audio = new Audio('/asset/audio/Airport_Bell.mp3');
+    audio.play();
+  }
