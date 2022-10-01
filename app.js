@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
 const app = express();
 
 const http = require('http');
@@ -10,6 +12,15 @@ const io = new Server(server);
 const morgan = require('morgan');
 app.use(morgan('dev'));
 app.use(express.json());
+
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+// app.use(bodyParser.json())
+// parse various different custom JSON types as JSON
+app.use(bodyParser.json({ type: 'application/*+json' }))
+app.use(cookieParser())
+const ejs = require('ejs');
+app.set('view engine', 'ejs');
 const path = require('path');
 
 const { getlastAntrian,
@@ -21,23 +32,40 @@ const { getlastAntrian,
     antrianPertama } = require('./model/index');
 const { cetakAntrian } = require('./usb.js');
 
-app.get('/', (req, res) => {
+app.get('/aa', (req, res) => {
     // res.send('Hello World!')
-    res.sendFile(path.join(__dirname, '/Public/index.html'));
+    // res.sendFile(path.join(__dirname, '/Public/index.html'));
+    res.render('index')
 })
-app.get('/tampil', (req, res) => {
-    // res.send('Hello World!')
-    res.sendFile(path.join(__dirname, '/Public/antrian.html'));
-})
-app.get('/admin', (req, res) => {
-    // res.send('Hello World!')
-    res.sendFile(path.join(__dirname, '/Public/next.html'));
+// app.get('/tampil', (req, res) => {
+//     // res.send('Hello World!')
+//     res.sendFile(path.join(__dirname, '/Public/antrian.html'));
+// })
+// app.get('/admin', (req, res) => {
+//     // res.send('Hello World!')
+//     res.sendFile(path.join(__dirname, '/Public/next.html'));
+// })
+// app.get('/login', (req, res) => {
+//     const data = {
+//         nama: 'admin',
+//     }
+//     let layout = path.join(__dirname, '/Public/login.html');
+//     mustache.render(layout, data, (err, html))
+//     // res.sendFile(path.join(__dirname, '/Public/login.html'));
+// })
+app.get('/auth', (req, res) => {
+    console.log("ss");
+    console.log(req.query);
+    // res.sendFile(path.join(__dirname, '/Public/login.html'));
 })
 app.use("/asset/js", express.static('public/js/'));
 app.use("/asset/img", express.static('public/img/'));
 app.use("/asset/css", express.static('public/css/'));
 app.use("/asset/audio", express.static('public/audio/'));
 app.use("/asset/fonts", express.static('public/fonts/'));
+
+const routes = require('./routes');
+app.use('/', routes);
 
 io.on('connection', async (socket) => {
     console.log('a user connected');

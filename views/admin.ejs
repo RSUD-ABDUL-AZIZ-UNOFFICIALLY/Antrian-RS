@@ -1,0 +1,101 @@
+<%- include('layout/header') -%>
+<div class="wrapper">
+    <div class="container-fluid">
+
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <h4 class="page-title">&nbsp;</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        <div><% user.username %> </div>
+        <div class="row">
+            <div class="col-md-12 col-xl-8">
+                <div class="card m-b-30 h-360">
+                    <div class="card-body">
+                        <h5 class="header-title mt-0 pb-3">Monitor Antrian </h5>
+                        <div class="row">
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card m-b-30 text-center">
+                                    <div class="h2 card-header text-white bg-success">
+                                        Loket 1
+                                    </div>
+                                    <div class="card-body">
+                                        <h1 id="L1">-</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card m-b-30 text-center">
+                                    <div class="h2 card-header text-white bg-success">
+                                        Loket 2
+                                    </div>
+                                    <div class="card-body">
+                                        <h1 id="L2">-</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card m-b-30 text-center">
+                                    <div class="h2 card-header text-white bg-success">
+                                        Loket 3
+                                    </div>
+                                    <div class="card-body">
+                                        <h1 id="L3">-</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card m-b-30 text-center">
+                                    <div class="h2 card-header text-white bg-success">
+                                        Loket 4
+                                    </div>
+                                    <div class="card-body">
+                                        <h1 id="L4">-</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-4">
+                <div class="card m-b-30 border-0">
+                    <div class="card-body  text-center">
+                        <div class="row text-center profile-block">
+                            <div class="col-6 align-self-center py-2 border-right">
+                                <img src="/asset/img/logo-RSUD.jpg" alt="" class="rounded-circle mx-auto d-block w-25">
+                            </div>
+                            <div class="col-6 align-self-center py-2">
+                                <h3 class="profile-count">
+                                    <b class="font-22" id="sisa">-</b>
+                                </h3>
+                                <p class="mb-0">Sisa Antrian</p>
+                            </div>
+                        </div>
+                        <div class="text-center pt-1">
+                            <button class="btn btn-block btn-raised btn-primary mb-3" onclick="next('L1')"><i
+                                    class="mdi mdi-voice"></i> Panggil Berikutnya</button>
+                            <button class="btn btn-block btn-raised btn-info mb-3"><i class="mdi mdi-voice"></i> Panggil
+                                Ulang</button>
+                            <button class="btn btn-block btn-raised btn-success mb-3"><i
+                                    class="mdi mdi-account-check"></i> Selesai Dilayani</button>
+                            <button class="btn btn-block btn-raised btn-danger mb-3"><i
+                                    class="mdi mdi-account-remove"></i> Tidak Hadir</button>
+                            <button class="btn btn-block btn-raised text-white bg-dark mb-3"><i
+                                    class="mdi mdi-account-convert"></i> Lewati</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- end container -->
+</div>
+<!-- end wrapper -->
+<%- include('layout/footer') -%>
