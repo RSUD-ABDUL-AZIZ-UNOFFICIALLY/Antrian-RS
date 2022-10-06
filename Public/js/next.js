@@ -22,7 +22,11 @@ socket.on('sisa', (msg) => {
     console.log('sisa: ' + msg);
     document.getElementById("sisa").innerHTML = msg;
 });
-
+function next(id) {
+    console.log('next ' + id);
+    socket.emit("next_antrian", id);
+    // socket.emit('UpdateLoket', "");
+}
 function next(id) {
     console.log('next ' + id);
     socket.emit("next_antrian", id);

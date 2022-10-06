@@ -32,32 +32,6 @@ const { getlastAntrian,
     antrianPertama } = require('./model/index');
 const { cetakAntrian } = require('./usb.js');
 
-app.get('/aa', (req, res) => {
-    // res.send('Hello World!')
-    // res.sendFile(path.join(__dirname, '/Public/index.html'));
-    res.render('index')
-})
-// app.get('/tampil', (req, res) => {
-//     // res.send('Hello World!')
-//     res.sendFile(path.join(__dirname, '/Public/antrian.html'));
-// })
-// app.get('/admin', (req, res) => {
-//     // res.send('Hello World!')
-//     res.sendFile(path.join(__dirname, '/Public/next.html'));
-// })
-// app.get('/login', (req, res) => {
-//     const data = {
-//         nama: 'admin',
-//     }
-//     let layout = path.join(__dirname, '/Public/login.html');
-//     mustache.render(layout, data, (err, html))
-//     // res.sendFile(path.join(__dirname, '/Public/login.html'));
-// })
-app.get('/auth', (req, res) => {
-    console.log("ss");
-    console.log(req.query);
-    // res.sendFile(path.join(__dirname, '/Public/login.html'));
-})
 app.use("/asset/js", express.static('public/js/'));
 app.use("/asset/img", express.static('public/img/'));
 app.use("/asset/css", express.static('public/css/'));
@@ -69,11 +43,11 @@ app.use('/', routes);
 
 io.on('connection', async (socket) => {
     console.log('a user connected');
-
     let sisaAntrian = await getSisaAntrian();
     io.emit('sisa', sisaAntrian.sisa);
     // io.emit('UpdateLoket', "");
-    console.log(sisaAntrian.sisa);
+    console.log("sisaAntrian.sisa: " + sisaAntrian.sisa);
+    // console.log(sisaAntrian);
     let sisaLoketAntrian = await getAntrian();
     sisaLoketAntrian.forEach(element => {
         console.log(element);
@@ -105,16 +79,17 @@ io.on('connection', async (socket) => {
             console.log(element);
             if (element.loket == msg) {
                 io.emit('loket', element.loket, element.nomor_antri);
+                io.emit('panggil', element.loket, element.nomor_antri);
                 // io.emit('loket',(msg, element.nomor_antri));
             }
-
         });
         return;
 
     });
     socket.on('cetak_antri', async (msg) => {
         let last = await getlastAntrian();
-        console.log(last);
+        console.log('cetak_antri: ');
+        console.log(typeof last);
         let nomor_antri = 0;
         if (last == undefined) {
             nomor_antri = 1;
@@ -126,7 +101,8 @@ io.on('connection', async (socket) => {
         await postAntrian(nomor_antri);
         let sisaAntrian = await getSisaAntrian();
         io.emit('sisa', sisaAntrian.sisa);
-        cetakAntrian(nomor_antri);
+        cetakAntrian("nomor_antri");
+        cetakAntrian(sisaAntrian.sisa);
         console.log('message: ' + msg);
     });
 });

@@ -1,9 +1,9 @@
 function number(a) {
     console.log(a);
+    new Audio('/asset/audio/suara/nomorantrian.wav').play();
     setTimeout(() => {
-        new Audio('/asset/audio/suara/nomorantrian.wav').play();
-    }, 100);
-    angka(a);
+        angka(a);
+    }, 500);
 }
 function angka(a) {
     if (a <= 12) {
@@ -199,7 +199,7 @@ function angka(a) {
 }
 function loket(a) {
     setTimeout(() => {
-        new Audio('/asset/audio/suara/kk.wav').play();
+        new Audio('/asset/audio/suara/loket.wav').play();
     }, 100);
     angka(a)
 }

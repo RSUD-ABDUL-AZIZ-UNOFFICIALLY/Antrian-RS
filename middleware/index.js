@@ -18,10 +18,12 @@ module.exports = {
             }
 
             const token = jwt.sign(data, process.env.TOKEN_SECRET);
-            res.cookie('token', token, { expires: new Date(Date.now() + (1000 * 3600 * 24)) }).redirect('/admin');
-
-            //         res.header('auth-token', token).send(token);
-            // res.redirect('/admin');
+            res.cookie('token', token, { expires: new Date(Date.now() + (1000 * 3600 * 24)) });
+            if (user.privilege <= 5) {
+                res.redirect('/admin');
+            } else if (user.privilege == 6) {
+                res.redirect('/cetak');
+            }
         }
     },
     cekLogin: async (req, res, next) => {

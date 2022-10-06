@@ -12,12 +12,13 @@
         </div>
         <!-- end page title end breadcrumb -->
 
-        <div><% user.username %> </div>
+        <div> </div>
         <div class="row">
             <div class="col-md-12 col-xl-8">
                 <div class="card m-b-30 h-360">
                     <div class="card-body">
-                        <h5 class="header-title mt-0 pb-3">Monitor Antrian </h5>
+                        <h5 class="header-title mt-0 pb-3">Monitor Antrian</h5>
+                        <h5 class="header-title mt-0 pb-3"><%= loket %></h5>
                         <div class="row">
                             <div class="col-md-12 col-xl-4">
                                 <div class="card m-b-30 text-center">
@@ -25,7 +26,7 @@
                                         Loket 1
                                     </div>
                                     <div class="card-body">
-                                        <h1 id="L1">-</h1>
+                                        <h1 id="1">-</h1>
                                     </div>
                                 </div>
                             </div>
@@ -35,7 +36,7 @@
                                         Loket 2
                                     </div>
                                     <div class="card-body">
-                                        <h1 id="L2">-</h1>
+                                        <h1 id="2">-</h1>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +46,7 @@
                                         Loket 3
                                     </div>
                                     <div class="card-body">
-                                        <h1 id="L3">-</h1>
+                                        <h1 id="3">-</h1>
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +56,7 @@
                                         Loket 4
                                     </div>
                                     <div class="card-body">
-                                        <h1 id="L4">-</h1>
+                                        <h1 id="4">-</h1>
                                     </div>
                                 </div>
                             </div>
@@ -78,16 +79,18 @@
                             </div>
                         </div>
                         <div class="text-center pt-1">
-                            <button class="btn btn-block btn-raised btn-primary mb-3" onclick="next('L1')"><i
+                            <button class="btn btn-block btn-raised btn-primary mb-3"
+                                onclick="next('<%-privilege%>')"><i
                                     class="mdi mdi-voice"></i> Panggil Berikutnya</button>
-                            <button class="btn btn-block btn-raised btn-info mb-3"><i class="mdi mdi-voice"></i> Panggil
+                            <button class="btn btn-block btn-raised btn-info mb-3"
+                                onclick="ulangPangilan('<%-privilege%>')"><i class="mdi mdi-voice"></i> Panggil
                                 Ulang</button>
-                            <button class="btn btn-block btn-raised btn-success mb-3"><i
+                            <!-- <button class="btn btn-block btn-raised btn-success mb-3"><i
                                     class="mdi mdi-account-check"></i> Selesai Dilayani</button>
                             <button class="btn btn-block btn-raised btn-danger mb-3"><i
                                     class="mdi mdi-account-remove"></i> Tidak Hadir</button>
                             <button class="btn btn-block btn-raised text-white bg-dark mb-3"><i
-                                    class="mdi mdi-account-convert"></i> Lewati</button>
+                                    class="mdi mdi-account-convert"></i> Lewati</button> -->
                         </div>
 
                     </div>
@@ -98,4 +101,56 @@
     </div> <!-- end container -->
 </div>
 <!-- end wrapper -->
+<%- include('layout/script') -%>
+<script src="/asset/js/audio.js"></script>
+<script>
+    const socket = io();
+    socket.on("connect", () => {
+        console.log(socket.connected); // true
+        console.log(socket.id); // "G5p5..."
+        socket.emit("UpdateLoket", "");
+    });
+    socket.on('loket', (msg, nomor_antri) => {
+        console.log(msg);
+        console.log(nomor_antri);
+        document.getElementById(msg).innerHTML = nomor_antri;
+    });
+    socket.on('sisa', (msg) => {
+        console.log('sisa: ' + msg);
+        document.getElementById("sisa").innerHTML = msg;
+    });
+    socket.on('panggil', (msg, nomor_antri) => {
+        console.log(msg);
+        console.log(nomor_antri);
+        let noloket = '<%-privilege%>'
+        if (noloket == msg) {
+            number(nomor_antri)
+            setTimeout(() => {
+                loket(noloket)
+            }, 2500);
+        }
+        document.getElementById(msg).innerHTML = nomor_antri;
+    });
+
+    function next(id) {
+        console.log('next ' + id);
+        socket.emit("next_antrian", id);
+    }
+
+    function next(id) {
+        console.log('next ' + id);
+        socket.emit("next_antrian", id);
+    }
+
+    function ulangPangilan(id) {
+        console.log("pangilan");
+        // socket.emit("Ulang Pangilan", id);
+        let nomor = document.getElementById(id).innerHTML;
+        console.log(nomor);
+        number(nomor)
+        setTimeout(() => {
+            loket(id)
+        }, 2500);
+    }
+</script>
 <%- include('layout/footer') -%>

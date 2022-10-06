@@ -38,7 +38,7 @@
                                         Loket 1
                                     </div>
                                     <div class="card-body">
-                                        <h1 id="L1">-</h1>
+                                        <h1 id="1">-</h1>
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@
                                         Loket 2
                                     </div>
                                     <div class="card-body">
-                                        <h1 id="L2">-</h1>
+                                        <h1 id="2">-</h1>
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                         Loket 3
                                     </div>
                                     <div class="card-body">
-                                        <h1 id="L3">-</h1>
+                                        <h1 id="3">-</h1>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                                         Loket 4
                                     </div>
                                     <div class="card-body">
-                                        <h1 id="L4">-</h1>
+                                        <h1 id="4">-</h1>
                                     </div>
                                 </div>
                             </div>
@@ -80,4 +80,13 @@
     </div>
 </div>
 <h1 hidden id="sisa">0</h1>
+<%- include('layout/script') -%>
+<script>
+    const socket = io();
+    socket.on('loket', (msg, nomor_antri) => {
+        console.log(msg);
+        console.log(nomor_antri);
+        document.getElementById(msg).innerHTML = nomor_antri;
+    });
+</script>
 <%- include('layout/footer') -%>
