@@ -32,11 +32,11 @@ const { getlastAntrian,
     antrianPertama } = require('./model/index');
 const { cetakAntrian } = require('./usb.js');
 
-app.use("/asset/js", express.static('public/js/'));
-app.use("/asset/img", express.static('public/img/'));
-app.use("/asset/css", express.static('public/css/'));
-app.use("/asset/audio", express.static('public/audio/'));
-app.use("/asset/fonts", express.static('public/fonts/'));
+app.use("/asset/js", express.static('./public/js/'));
+app.use("/asset/img", express.static('./public/img/'));
+app.use("/asset/css", express.static('./public/css/'));
+app.use("/asset/audio", express.static('./public/audio/'));
+app.use("/asset/fonts", express.static('./public/fonts/'));
 
 const routes = require('./routes');
 app.use('/', routes);
