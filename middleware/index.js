@@ -19,11 +19,14 @@ module.exports = {
 
             const token = jwt.sign(data, process.env.TOKEN_SECRET);
             res.cookie('token', token, { expires: new Date(Date.now() + (1000 * 3600 * 24)) });
-            if (user.privilege >= 6) {
+            if (user.privilege <= 6) {
                 res.redirect('/admin');
+                return;
             } else if (user.privilege == 'ANT') {
                 res.redirect('/cetak');
+                return;
             }
+            res.redirect('/login');
         }
     },
     cekLogin: async (req, res, next) => {

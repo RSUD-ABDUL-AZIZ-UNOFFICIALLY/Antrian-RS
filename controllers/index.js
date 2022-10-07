@@ -6,7 +6,7 @@ module.exports = {
     adminLoket: (req, res) => {
         const token = req.cookies.token;
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        if (verified.privilege > 6) {
+        if (verified.privilege == 'ANT') {
             res.redirect('/login');
             console.log('bukan admin');
             return;
