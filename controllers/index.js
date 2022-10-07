@@ -6,7 +6,7 @@ module.exports = {
     adminLoket: (req, res) => {
         const token = req.cookies.token;
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        if (verified.privilege > 5) {
+        if (verified.privilege > 6) {
             res.redirect('/login');
             console.log('bukan admin');
             return;
@@ -18,18 +18,18 @@ module.exports = {
             loket: verified.level,
             privilege: verified.privilege
         }
-        console.log(data);
+        // console.log(data);
         res.render('admin', data)
     },
     cetakAntriann: async (req, res) => {
         const token = req.cookies.token;
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        if (verified.privilege == 6) {
+        if (verified.privilege == 'ANT') {
             res.render('cetak', { title: "ANTREAN LOKET" })
             return;
         }
         res.redirect('/login');
-        console.log('bukan cetak');
+        console.log('bukan admin cetak');
         return;
     }
 };
