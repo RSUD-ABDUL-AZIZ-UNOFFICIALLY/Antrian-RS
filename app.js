@@ -53,6 +53,17 @@ io.on('connection', async (socket) => {
         console.log(element);
         io.emit('loket', element.loket, element.nomor_antri);
     });
+
+    let last = await getlastAntrian();
+    let nomor_antri = 0;
+    if (last == undefined) {
+        nomor_antri = 1;
+    } else {
+        nomor_antri = last.nomor_antri + 1;
+    }
+    console.log('nomor_antri: ' + nomor_antri);
+    io.emit('nomor_antri', nomor_antri);
+
     socket.on('next_antrian', async (msg) => {
         console.log('next_antrian: ' + msg);
         let nextId = await getNextId();
@@ -97,11 +108,13 @@ io.on('connection', async (socket) => {
         console.log('nomor_antri: ' + nomor_antri);
         // let nomor_antri = last.nomor_antri + 1;
         await postAntrian(nomor_antri);
+        io.emit('nomor_antri', nomor_antri);
         let sisaAntrian = await getSisaAntrian();
         io.emit('sisa', sisaAntrian.sisa);
         cetakAntrian(sisaAntrian.sisa);
         console.log('message: ' + msg);
     });
+
 });
 
 
