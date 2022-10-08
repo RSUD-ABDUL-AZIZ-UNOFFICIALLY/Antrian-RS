@@ -1,5 +1,4 @@
 function number(a) {
-    console.log(a);
     new Audio('/asset/audio/suara/nomorantrian.wav').play();
     setTimeout(() => {
         angka(a);

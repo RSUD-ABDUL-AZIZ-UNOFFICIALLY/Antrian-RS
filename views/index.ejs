@@ -38,7 +38,7 @@
                                         Loket 1
                                     </div>
                                     <div class="card-body">
-                                        <h1 id="6">-</h1>
+                                        <h1 id="1">-</h1>
                                     </div>
                                 </div>
                             </div>
@@ -87,6 +87,11 @@
         console.log(msg);
         console.log(nomor_antri);
         document.getElementById(msg).innerHTML = nomor_antri;
+    });
+    socket.on("connect", () => {
+    console.log(socket.connected); // true
+    console.log(socket.id); // "G5p5..."
+    socket.emit("UpdateLoket", "");
     });
 </script>
 <%- include('layout/footer') -%>
