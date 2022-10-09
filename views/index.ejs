@@ -95,16 +95,16 @@
         socket.emit("UpdateLoket", "");
     });
     socket.on('pangil', (no, loket) => {
-    console.log("pangil : " + no + " Loket : " + loket);
-    number(no);
-    // loket(loket);
-    setTimeout(() => {
-    new Audio('/asset/audio/suara/loket.wav').play();
-    }, 3000);
-    setTimeout(() => {
-    console.log("loket : " + loket);
-    angka(loket)
-    }, 3200);
-
+        console.log("pangil : " + no + " Loket : " + loket);
+        number(no);
+        // loket(loket);
+        setTimeout(() => {
+        new Audio('/asset/audio/suara/loket.wav').play();
+        }, 3000);
+        setTimeout(() => {
+        console.log("loket : " + loket);
+        angka(loket)
+        }, 3200);
+    });
 </script>
 <%- include('layout/footer') -%>
