@@ -89,8 +89,10 @@ io.on('connection', async (socket) => {
         sisaLoketAntrian.forEach(element => {
             // console.log(element);
             if (element.loket == msg) {
+                console.log("TES" + element.loket + " " + element.nomor_antri);
                 io.emit('loket', element.loket, element.nomor_antri);
-                io.emit('panggil', element.loket, element.nomor_antri);
+
+                // io.emit('panggil', element.loket, element.nomor_antri);
                 // io.emit('loket',(msg, element.nomor_antri));
             }
         });
@@ -113,9 +115,34 @@ io.on('connection', async (socket) => {
         cetakAntrian(sisaAntrian.sisa);
         console.log('message: ' + msg);
         io.emit('nomor_antri', nomor_antri);
+        io.emit('btnCetak', false);
+    });
+    socket.on('suara', (msg) => {
+        console.log("suara");
+        console.log(msg);
+        buffer.push(msg);
+        // let no = msg[0];
+        // let loket = msg[1];
+        // io.emit("pangil", no, loket);
     });
 
 });
+let buffer = [];
+
+function displayHello() {
+    console.log("Hello");
+    console.log(buffer.length);
+    if (buffer.length > 0) {
+        let msg = buffer.shift();
+        console.log(msg);
+        let no = msg[0];
+        let loket = msg[1];
+        io.emit("pangil", no, loket);
+    }
+    // setTimeout(displayHello, 5000);
+}
+setInterval(displayHello, 5500);
+
 
 
 const PORT = process.env.PORT || 3000;

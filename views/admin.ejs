@@ -85,10 +85,10 @@
                             </div>
                         </div>
                         <div class="text-center pt-1">
-                            <button class="btn btn-block btn-raised btn-primary mb-3"
-                                onclick="next('<%-privilege%>')"><i
-                                    class="mdi mdi-voice"></i> Panggil Berikutnya</button>
-                            <button class="btn btn-block btn-raised btn-info mb-3"
+                            <button class="btn btn-block btn-raised btn-primary mb-3" id="next"
+                                onclick="next('<%-privilege%>')"><i class="mdi mdi-voice"></i> Panggil
+                                Berikutnya</button>
+                            <button class="btn btn-block btn-raised btn-info mb-3" id="ulang"
                                 onclick="ulangPangilan('<%-privilege%>')"><i class="mdi mdi-voice"></i> Panggil
                                 Ulang</button>
                             <!-- <button class="btn btn-block btn-raised btn-success mb-3"><i
@@ -122,39 +122,40 @@
         document.getElementById(msg).innerHTML = nomor_antri;
     });
     socket.on('nomor_antri', (msg) => {
-    console.log("Nomor antri yang tercetak : " + msg);
-    document.getElementById("total").innerHTML = msg;
+        console.log("Nomor antri yang tercetak : " + msg);
+        document.getElementById("total").innerHTML = msg;
     });
     socket.on('sisa', (msg) => {
         console.log('sisa: ' + msg);
         document.getElementById("sisa").innerHTML = msg;
     });
-    socket.on('panggil', (msg, nomor_antri) => {
-        console.log(msg);
-        console.log(nomor_antri);
-        let noloket = '<%-privilege%>'
-        if (noloket == msg) {
-            number(nomor_antri)
-            setTimeout(() => {
-                loket(noloket)
-            }, 2500);
-        }
-        document.getElementById(msg).innerHTML = nomor_antri;
-    });
+    let btnNext = document.getElementById('next');
+    let btnUlang = document.getElementById('ulang');
 
     function next(id) {
         console.log('next ' + id);
+        btnUlang.disabled = true;
+        btnNext.disabled = true;
+        let nomor = document.getElementById(id).innerHTML;
+        let suara = [Math.floor(nomor) + 1, id];
+        console.log(suara);
+        socket.emit("suara", suara);
         socket.emit("next_antrian", id);
     }
     function ulangPangilan(id) {
         console.log("pangilan");
-        // socket.emit("Ulang Pangilan", id);
+        btnUlang.disabled = true;
+        btnNext.disabled = true;
         let nomor = document.getElementById(id).innerHTML;
-        console.log(nomor);
-        number(nomor)
-        setTimeout(() => {
-            loket(id)
-        }, 2500);
+        let suara = [nomor, id];
+        console.log(suara);
+        socket.emit("suara", suara);
     }
+    socket.on('pangil', (no, loket) => {
+    if (loket == '<%-privilege%>') {
+    btnUlang.disabled = false;
+    btnNext.disabled = false;
+    }
+    });
 </script>
 <%- include('layout/footer') -%>

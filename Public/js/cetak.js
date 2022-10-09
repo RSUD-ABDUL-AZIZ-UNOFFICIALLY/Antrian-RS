@@ -15,9 +15,14 @@ socket.on('nomor_antri', (msg) => {
     console.log('nomor antri: ' + msg);
     document.getElementById("antrian").innerHTML = msg;
 });
-
+let btnCetak = document.getElementById("btnCetak");
 function cetak() {
     console.log('cetak');
+    btnCetak.disabled = true;
     socket.emit("cetak_antri", "cetak tiket");
 }
+socket.on('btnCetak', (msg) => {
+    console.log('nomor antri: ' + msg);
+    btnCetak.disabled = false;
+});
 
