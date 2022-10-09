@@ -130,8 +130,7 @@ io.on('connection', async (socket) => {
 let buffer = [];
 
 function displayHello() {
-    console.log("Hello");
-    console.log(buffer.length);
+    console.log(buffer);
     if (buffer.length > 0) {
         let msg = buffer.shift();
         console.log(msg);
