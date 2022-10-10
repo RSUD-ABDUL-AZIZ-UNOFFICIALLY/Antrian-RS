@@ -1,2 +1,17 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/asset/js/bootstrap.js"></script>
+<script>
+    setInterval(() => {
+        var attBul = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
+        var attHar = ["-", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu"]
+        var date = new Date()
+        var detik = date.getSeconds()
+        var menit = date.getMinutes()
+        var jam = date.getHours()
+        var hari = date.getDay()
+        var tanggal = date.getDate()
+        var bulan = date.getMonth()
+        var tahun = date.getFullYear()
+        document.getElementById('waktu-berjalan').innerHTML = attHar[hari]+" ,"+tanggal+" "+attBul[bulan]+" "+tahun+" [ "+jam+":"+menit+":"+detik+" ]"
+    }, 1000);
+</script>
