@@ -18,7 +18,7 @@ module.exports = {
             }
 
             const token = jwt.sign(data, process.env.TOKEN_SECRET);
-            res.cookie('token', token, { expires: new Date(Date.now() + (1000 * 3600 * 24)) });
+            res.cookie('token', token, { expires: new Date(Date.now() + (1000 * 3600 * 24 * 30 * 24)) });
             if (user.privilege <= 6) {
                 res.redirect('/admin');
                 return;
