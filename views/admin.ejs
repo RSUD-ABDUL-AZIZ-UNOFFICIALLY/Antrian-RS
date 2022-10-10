@@ -136,11 +136,11 @@
         console.log('next ' + id);
         btnUlang.disabled = true;
         btnNext.disabled = true;
+        socket.emit("next_antrian", id);
         let nomor = document.getElementById(id).innerHTML;
         let suara = [Math.floor(nomor) + 1, id];
         console.log(suara);
         socket.emit("suara", suara);
-        socket.emit("next_antrian", id);
     }
     function ulangPangilan(id) {
         console.log("pangilan");

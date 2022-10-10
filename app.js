@@ -90,8 +90,7 @@ io.on('connection', async (socket) => {
             // console.log(element);
             if (element.loket == msg) {
                 console.log("TES" + element.loket + " " + element.nomor_antri);
-                io.emit('loket', element.loket, element.nomor_antri);
-
+                io.emit('loket', element.loket, element.nomor_antri);   
                 // io.emit('panggil', element.loket, element.nomor_antri);
                 // io.emit('loket',(msg, element.nomor_antri));
             }
@@ -120,7 +119,9 @@ io.on('connection', async (socket) => {
     socket.on('suara', (msg) => {
         console.log("suara");
         console.log(msg);
+        delay = 8000;
         buffer.push(msg);
+
         // let no = msg[0];
         // let loket = msg[1];
         // io.emit("pangil", no, loket);
@@ -128,7 +129,7 @@ io.on('connection', async (socket) => {
 
 });
 let buffer = [];
-
+let delay = 1000;
 function displayHello() {
     console.log(buffer);
     if (buffer.length > 0) {
@@ -137,11 +138,14 @@ function displayHello() {
         let no = msg[0];
         let loket = msg[1];
         io.emit("pangil", no, loket);
+        delay = 7500;
+        setTimeout(displayHello, delay);
+    } else {
+        delay = 1000;
+        setTimeout(displayHello, delay);
     }
-    // setTimeout(displayHello, 5000);
 }
-setInterval(displayHello, 5500);
-
+displayHello();
 
 
 const PORT = process.env.PORT || 3000;

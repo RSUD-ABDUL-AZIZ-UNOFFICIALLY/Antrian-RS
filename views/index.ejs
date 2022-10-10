@@ -81,7 +81,7 @@
 </div>
 <h1 hidden id="sisa">0</h1>
 <%- include('layout/script') -%>
-<script src="/asset/js/audio.js"></script>
+<script src="/asset/js/audio2.js"></script>
 <script>
     const socket = io();
     socket.on('loket', (msg, nomor_antri) => {
@@ -100,11 +100,11 @@
         // loket(loket);
         setTimeout(() => {
         new Audio('/asset/audio/suara/loket.wav').play();
-        }, 3000);
+        }, 3700);
         setTimeout(() => {
         console.log("loket : " + loket);
         angka(loket)
-        }, 3200);
+        }, 3900);
     });
 </script>
 <%- include('layout/footer') -%>
