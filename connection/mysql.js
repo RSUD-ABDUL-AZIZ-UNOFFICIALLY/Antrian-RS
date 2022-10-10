@@ -1,6 +1,6 @@
-// var mysql = require('mysql');
-const mariadb = require('mariadb');
 require('dotenv').config();
+
+// var mysql = require('mysql');
 // const con = mysql.createConnection({
 //     host: process.env.DB_HOST,
 //     user: process.env.DB_USER,
@@ -12,6 +12,8 @@ require('dotenv').config();
 //     if (err) throw err;
 //     console.log("My SQL Connected!");
 // });
+
+const mariadb = require('mariadb');
 const con = mariadb.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -26,13 +28,6 @@ const con = mariadb.createPool({
 const conn = async function () {
     return await pool.getConnection();
 }
-//     .then(conn => {
-//         console.log("MariaDB Connected!");
-//         // conn.end(); //release to pool
-//     })
-//     .catch(err => {
-//         console.log("not connected due to error: " + err);
-//     });
 
 module.exports = {
     con,

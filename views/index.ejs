@@ -1,0 +1,110 @@
+<%- include('layout/header') -%>
+<div class="wrapper">
+    <div class="container-fluid">
+
+        <!-- Page-Title -->
+        <!-- <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">RSUD dr. ABDUL AZIZ</h4>
+                    </div>
+                </div>
+            </div> -->
+        <!-- end page title end breadcrumb -->
+
+        <div class="row">
+            <div class="col-md-12 col-xl-6">
+                <div class="card m-b-30 h-360">
+                    <div class="card-body">
+                        <div class="video-container">
+                            <video id="videos" controls width="580px" height="350px" autoplay loop muted="muted">
+                                <!-- <source id="video" src="{!! asset('theme/assets/video/video.mp4') !!}" type="video/mp4"> -->
+                                <source id="video" src="/asset/audio/pendaftaran.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-6">
+                <div class="card m-b-30 h-360">
+                    <div class="h2 card-header text-white text-center bg-success">
+                        ANTREAN DIPANGGIL
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card m-b-30 text-center">
+                                    <div class="h2 card-header text-white bg-success">
+                                        Loket 1
+                                    </div>
+                                    <div class="card-body">
+                                        <h1 id="1">-</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card m-b-30 text-center">
+                                    <div class="h2 card-header text-white bg-success">
+                                        Loket 2
+                                    </div>
+                                    <div class="card-body">
+                                        <h1 id="2">-</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card m-b-30 text-center">
+                                    <div class="h2 card-header text-white bg-success">
+                                        Loket 3
+                                    </div>
+                                    <div class="card-body">
+                                        <h1 id="3">-</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card m-b-30 text-center">
+                                    <div class="h2 card-header text-white bg-success">
+                                        Loket 4
+                                    </div>
+                                    <div class="card-body">
+                                        <h1 id="4">-</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h1 hidden id="sisa">0</h1>
+<%- include('layout/script') -%>
+<script src="/asset/js/audio2.js"></script>
+<script>
+    const socket = io();
+    socket.on('loket', (msg, nomor_antri) => {
+        console.log(msg);
+        console.log(nomor_antri);
+        document.getElementById(msg).innerHTML = nomor_antri;
+    });
+    socket.on("connect", () => {
+        console.log(socket.connected); // true
+        console.log(socket.id); // "G5p5..."
+        socket.emit("UpdateLoket", "");
+    });
+    socket.on('pangil', (no, loket) => {
+        console.log("pangil : " + no + " Loket : " + loket);
+        number(no);
+        // loket(loket);
+        setTimeout(() => {
+        new Audio('/asset/audio/suara/loket.wav').play();
+        }, 3700);
+        setTimeout(() => {
+        console.log("loket : " + loket);
+        angka(loket)
+        }, 3900);
+    });
+</script>
+<%- include('layout/footer') -%>

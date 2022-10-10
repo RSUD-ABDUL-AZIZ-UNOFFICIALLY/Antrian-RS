@@ -1,6 +1,8 @@
 const { con, conn } = require('../connection/mysql');
 let date = new Date();
-let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getDate() + "%";
+// let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getDate() + "%";
+let date_now = "%" + date.toISOString().slice(0, 10) + "%";
+console.log(date_now);
 const getlastAntrian = async function () {
 
     var sql = `SELECT antrian_loket .nomor_antri, antrian_loket .created_at, antrian_loket .uid FROM antrian_loket WHERE antrian_loket .created_at LIKE ? ORDER BY  antrian_loket .nomor_antri DESC LIMIT 1`
