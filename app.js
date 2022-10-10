@@ -89,6 +89,8 @@ io.on('connection', async (socket) => {
         sisaLoketAntrian.forEach(element => {
             // console.log(element);
             if (element.loket == msg) {
+                let nextANT = [element.nomor_antri, element.loket];
+                buffer.push(nextANT);
                 console.log("TES" + element.loket + " " + element.nomor_antri);
                 io.emit('loket', element.loket, element.nomor_antri);   
                 // io.emit('panggil', element.loket, element.nomor_antri);
