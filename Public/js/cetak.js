@@ -13,7 +13,7 @@ socket.on('sisa', (msg) => {
 });
 socket.on('nomor_antri', (msg) => {
     console.log('nomor antri: ' + msg);
-    document.getElementById("antrian").innerHTML = msg;
+    document.getElementById("antrian").innerHTML = Math.floor(msg + 1);
 });
 let btnCetak = document.getElementById("btnCetak");
 function cetak() {
