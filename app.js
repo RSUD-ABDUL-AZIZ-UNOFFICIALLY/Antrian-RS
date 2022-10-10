@@ -133,8 +133,8 @@ io.on('connection', async (socket) => {
 let buffer = [];
 let delay = 1000;
 function displayHello() {
-    console.log(buffer);
     if (buffer.length > 0) {
+        console.log(buffer);
         let msg = buffer.shift();
         console.log(msg);
         let no = msg[0];
