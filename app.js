@@ -113,7 +113,7 @@ io.on('connection', async (socket) => {
         await postAntrian(nomor_antri);
         let sisaAntrian = await getSisaAntrian();
         io.emit('sisa', sisaAntrian.sisa);
-        cetakAntrian(sisaAntrian.sisa);
+        cetakAntrian(nomor_antri);
         console.log('message: ' + msg);
         io.emit('nomor_antri', nomor_antri);
         io.emit('btnCetak', false);
