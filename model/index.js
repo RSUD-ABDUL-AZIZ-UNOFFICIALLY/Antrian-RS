@@ -26,19 +26,25 @@ const getAntrian = async function () {
     let date_now = "%" + date.toISOString().slice(0, 10) + "%";
 
     var sql = `SELECT
-	antrian_loket.*
-    FROM
+	antrian_loket.uid, 	
+	MAX(antrian_loket.nomor_antri) AS nomor_antri, 
+	antrian_loket.loket, 
+	antrian_loket.created_at, 
+	antrian_loket.updated_at
+FROM
 	antrian_loket
-    WHERE
+WHERE
 	antrian_loket.created_at LIKE ? AND
-	antrian_loket.loket IS NOT NULL AND
-	antrian_loket.nomor_antri IN ((SELECT MAX(antrian_loket.nomor_antri) FROM antrian_loket GROUP BY antrian_loket.loket))
-    ORDER BY
+	antrian_loket.updated_at IS NOT NULL
+GROUP BY
+	antrian_loket.loket
+ORDER BY
 	antrian_loket.loket ASC`
     const result = await con.query(sql, [date_now]);
     // console.log(result);
     return result;
 }
+
 const postAntrian = async function (nomor_antri) {
     let date = new Date();
 
