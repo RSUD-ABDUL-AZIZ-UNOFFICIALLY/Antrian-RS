@@ -1,12 +1,13 @@
 <%- include('layout/header') -%>
 <div class="wrapper">
     <div class="container-fluid">
-
         <div class="card-body text-center">
             <h1 class="">Antrian ke <p id="antrian">0</h1>
             <div class="button-items">
-                <button type="button" id="btnCetak" onclick="cetak()" class="btn btn-primary btn-lg"><span
-                        class="mdi mdi-printer"></span> Centak</button>
+                <button type="button" id="btnCetak" onclick="cetak()" class="btn btn-lg btn-primary btn-cetak">
+                    <!-- <span class="mdi mdi-printer"></span> -->
+                    <div class="text-uppercase text-cetak"> Cetak Antrian</div>
+                </button>
             </div>       
         </div>
         <!-- <div class="card-body text-center">

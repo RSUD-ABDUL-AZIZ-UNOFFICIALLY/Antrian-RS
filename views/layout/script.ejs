@@ -12,6 +12,7 @@
         var tanggal = date.getDate()
         var bulan = date.getMonth()
         var tahun = date.getFullYear()
-        document.getElementById('waktu-berjalan').innerHTML = attHar[hari]+" ,"+tanggal+" "+attBul[bulan]+" "+tahun+" [ "+jam+":"+menit+":"+detik+" ]"
+        document.getElementById('waktu-berjalan').innerHTML =jam+":"+menit+":"+detik
+        document.getElementById('tanggal').innerHTML = attHar[hari]+" ,"+tanggal+" "+attBul[bulan]+" "+tahun
     }, 1000);
 </script>

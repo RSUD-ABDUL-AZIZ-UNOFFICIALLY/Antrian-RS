@@ -1,0 +1,41 @@
+.btn-cetak {
+    background-color: #380bff;
+
+    border: none;
+    color: white;
+    /* padding: 16px 32px; */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    width: 330px;
+    height: 200px;
+    margin: 4px 2px;
+    /* cursor: pointer; */
+}
+
+.text-cetak {
+    font-size: 30px;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    width: 300px;
+    display: inline-block;
+}
+
+hx {
+    font-size: 100px;
+    color: #000000;
+    font-weight: bold;
+    display: inline-block;
+    position: relative;
+}
+
+hx2 {
+    font-size: 50px;
+    font-family: Helvetica, sans-serif;
+    color: #ffffff;
+    font-weight: bold;
+    display: inline-block;
+    position: relative;
+}
