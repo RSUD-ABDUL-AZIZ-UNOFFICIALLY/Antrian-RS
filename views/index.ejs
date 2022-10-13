@@ -93,10 +93,17 @@
         setTimeout(() => {
             new Audio('/asset/audio/suara/loket.wav').play();
         }, 3700);
-        setTimeout(() => {
+        if(no>100){
+            setTimeout(() => {
             console.log("loket : " + loket);
             angka(loket)
-        }, 3900);
+        }, 4200);
+        } else{
+            setTimeout(() => {
+            console.log("loket : " + loket);
+            angka(loket)
+        }, 3900);}
+     
     });
 </script>
 <%- include('layout/footer') -%>
