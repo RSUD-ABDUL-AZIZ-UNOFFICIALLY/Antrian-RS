@@ -90,15 +90,19 @@
         console.log("pangil : " + no + " Loket : " + loket);
         number(no);
         console.log("Nomor antrian : " + no);
-        setTimeout(() => {
-            new Audio('/asset/audio/suara/loket.wav').play();
-        }, 3700);
+      
         if(no>100){
             setTimeout(() => {
             console.log("loket : " + loket);
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 5200);
+            setTimeout(() => {
             angka(loket)
-        }, 4200);
+        }, 5100);
         } else{
+            setTimeout(() => {
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 3700);
             setTimeout(() => {
             console.log("loket : " + loket);
             angka(loket)
