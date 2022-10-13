@@ -89,7 +89,7 @@
     socket.on('pangil', (no, loket) => {
         console.log("pangil : " + no + " Loket : " + loket);
         number(no);
-        // loket(loket);
+        console.log("Nomor antrian : " + no);
         setTimeout(() => {
             new Audio('/asset/audio/suara/loket.wav').play();
         }, 3700);
