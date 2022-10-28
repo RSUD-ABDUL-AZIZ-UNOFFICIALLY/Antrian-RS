@@ -10,43 +10,71 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12 col-xl-3">
-                                <div class="card m-b-30 text-center">
-                                    <div class="h2 card-header text-white bg-success">
-                                        <hx2>Loket 1</hx2>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card m-b-30 text-center">
+                                            <div class="h2 card-header text-white bg-success">
+                                                <hx2>Loket 1</hx2>
+                                            </div>
+                                            <div class="card-body">
+                                                <hx class="font-weight-bold" id="1">-</hx>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <hx class="font-weight-bold" id="1">-</hx>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card m-b-30 text-center">
+                                            <div class="h2 card-header text-white bg-success">
+                                                <hx2>Loket 2</hx2>
+                                            </div>
+                                            <div class="card-body">
+                                                <hx id="2">-</hx>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-xl-3">
-                                <div class="card m-b-30 text-center">
-                                    <div class="h2 card-header text-white bg-success">
-                                        <hx2>Loket 2</hx2>
-                                    </div>
-                                    <div class="card-body">
-                                        <hx id="2">-</hx>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-xl-3">
-                                <div class="card m-b-30 text-center">
-                                    <div class="h2 card-header text-white bg-success">
-                                        <hx2>Loket 3</hx2>
-                                    </div>
-                                    <div class="card-body">
-                                        <hx id="3">-</hx>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card m-b-30 h-360">
+                                            <div class="card-body">
+                                                <div class="video-container">
+                                                    <video id="videos" controls autoplay loop muted="muted">
+                                                        <!-- <source id="video" src="{!! asset('theme/assets/video/video.mp4') !!}" type="video/mp4"> -->
+                                                        <source id="video" src="/asset/audio/pendaftaran.mp4" type="video/mp4">
+                                                    </video>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-xl-3">
-                                <div class="card m-b-30 text-center">
-                                    <div class="h2 card-header text-white bg-success">
-                                        <hx2>Loket 4</hx2>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card m-b-30 text-center">
+                                            <div class="h2 card-header text-white bg-success">
+                                                <hx2>Loket 3</hx2>
+                                            </div>
+                                            <div class="card-body">
+                                                <hx id="3">-</hx>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <hx id="4">-</hx>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card m-b-30 text-center">
+                                            <div class="h2 card-header text-white bg-success">
+                                                <hx2>Loket 4</hx2>
+                                            </div>
+                                            <div class="card-body">
+                                                <hx id="4">-</hx>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -55,20 +83,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 col-xl-12">
-                <div class="card m-b-30 h-360">
-                    <div class="card-body">
-                        <div class="video-container">
-                            <video id="videos" controls autoplay loop muted="muted">
-                                <!-- <source id="video" src="{!! asset('theme/assets/video/video.mp4') !!}" type="video/mp4"> -->
-                                <source id="video" src="/asset/audio/pendaftaran.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div>
 <h1 hidden id="sisa">0</h1>
