@@ -2,12 +2,12 @@ const { con, conn } = require('../connection/mysql');
 // let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getDate() + "%";
 let date = new Date()
 // let date_now = "%" + date.toISOString().slice(0, 10) + "%";
-let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getDate() + "%";
+let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + (date.getDate())).slice(-2) + "%";
 console.log(date_now);
 const getlastAntrian = async function () {
     let date = new Date()
     // let date_now = "%" + date.toISOString().slice(0, 10) + "%";
-    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getDate() + "%";
+    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + (date.getDate())).slice(-2) + "%";
 
     var sql = `SELECT antrian_loket .nomor_antri, antrian_loket .created_at, antrian_loket .uid FROM antrian_loket WHERE antrian_loket .created_at LIKE ? ORDER BY  antrian_loket .nomor_antri DESC LIMIT 1`
     const result = await con.query(sql, [date_now]);
@@ -17,7 +17,7 @@ const getlastAntrian = async function () {
 const getSisaAntrian = async function () {
     let date = new Date()
     // let date_now = "%" + date.toISOString().slice(0, 10) + "%";
-    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getDate() + "%";
+    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + (date.getDate())).slice(-2) + "%";
 
 
     var sql = `SELECT COUNT('sisa') AS sisa FROM  antrian_loket  WHERE  antrian_loket .created_at LIKE ? AND  antrian_loket .updated_at IS NULL`
@@ -29,7 +29,7 @@ const getSisaAntrian = async function () {
 const getAntrian = async function () {
     let date = new Date()
     // let date_now = "%" + date.toISOString().slice(0, 10) + "%";
-    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getDate() + "%";
+    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + (date.getDate())).slice(-2) + "%";
 
     var sql = `SELECT
 	antrian_loket.uid, 	
@@ -70,7 +70,7 @@ const updateAntrian = async function (loket, uid) {
 const getNextId = async function () {
     let date = new Date()
     // let date_now = "%" + date.toISOString().slice(0, 10) + "%";
-    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getDate() + "%";
+    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + (date.getDate())).slice(-2) + "%";
 
     var sql = `SELECT
     antrian_loket.*
@@ -89,7 +89,7 @@ LIMIT 1`
 const antrianPertama = async function () {
     let date = new Date()
     // let date_now = "%" + date.toISOString().slice(0, 10) + "%";
-    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getDate() + "%";
+    let date_now = "%" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + (date.getDate())).slice(-2) + "%";
 
     var sql = `SELECT
     antrian_loket.*
