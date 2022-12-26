@@ -39,6 +39,16 @@
                             <div class="col-4">
                                 <div class="row">
                                     <div class="col-12">
+                                        <div class="card m-b-30 text-center">
+                                            <div class="h2 card-header text-white bg-success">
+                                                <hx2>Sisa Antian</hx2>
+                                            </div>
+                                            <div class="card-body">
+                                                <hx id="sisa">-</hx>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
                                         <div class="card m-b-30 h-360">
                                             <div class="card-body">
                                                 <div class="video-container">
@@ -123,6 +133,10 @@
             angka(loket)
         }, 3900);}
      
+    });
+    socket.on('sisa', (msg) => {
+        console.log('sisa: ' + msg);
+        document.getElementById("sisa").innerHTML = msg;
     });
 </script>
 <%- include('layout/footer') -%>
