@@ -30,6 +30,7 @@ const { getlastAntrian,
     updateAntrian,
     getNextId,
     antrianPertama } = require('./model/index');
+const prioritas = require('./model/prioritas');
 const { cetakAntrian } = require('./usb.js');
 
 app.use("/asset/js/", express.static(path.join(__dirname + '/Public/js/')));
@@ -46,6 +47,8 @@ io.on('connection', async (socket) => {
     console.log('a user connected');
     let sisaAntrian = await getSisaAntrian();
     io.emit('sisa', sisaAntrian.sisa);
+    let sisaAntrianprioritas = await prioritas.getSisaAntrian();
+    io.emit('sisa_prioritas', sisaAntrianprioritas.sisa);
     console.log("sisaAntrian.sisa: " + sisaAntrian.sisa);
     let sisaLoketAntrian = await getAntrian();
     console.log(sisaLoketAntrian);
@@ -63,6 +66,15 @@ io.on('connection', async (socket) => {
     }
     let totolAntrian = nomor_antri;
     io.emit('nomor_antri', totolAntrian);
+    let last_prioritas = await prioritas.getlastAntrian();
+    let nomor_antri_prioritas = 0;
+    if (last_prioritas == undefined) {
+        nomor_antri_prioritas = 0;
+    } else {
+        nomor_antri_prioritas = last_prioritas.nomor_antri;
+    }
+    let totolAntrianprioritas = nomor_antri_prioritas;
+    io.emit('nomor_antri_prioritas', totolAntrianprioritas);
 
     socket.on('next_antrian', async (msg) => {
         console.log('next_antrian: ' + msg);
@@ -100,6 +112,42 @@ io.on('connection', async (socket) => {
         return;
 
     });
+    socket.on('next_antrian_prioritas', async (msg) => {
+        console.log('next_antrian prioritas: ' + msg);
+        let nextId = await prioritas.getNextId();
+        
+        let uidPrioritas
+        try {
+            if (nextId == undefined) {
+                let id_antrian = await prioritas.antrianPertama();
+                uidPrioritas = id_antrian.uid;
+    
+            } else {
+                uidPrioritas = nextId.uid + 1;
+            }
+        } catch (error) {
+            console.log(error);
+            return
+        }
+        console.log('nextId: ' + uidPrioritas);
+        await prioritas.updateAntrian(msg, uidPrioritas);
+        let sisaAntrian = await prioritas.getSisaAntrian();
+        io.emit('sisa_prioritas', sisaAntrian.sisa);
+        let sisaLoketAntrian = await prioritas.getAntrian();
+        sisaLoketAntrian.forEach(element => {
+            // console.log(element);
+            if (element.loket == msg) {
+                let nextANT = [element.nomor_antri, element.loket];
+                buffer.push(nextANT);
+                console.log("TES" + element.loket + " " + element.nomor_antri);
+                io.emit('loket_prioritas', element.loket, element.nomor_antri);   
+                // io.emit('panggil', element.loket, element.nomor_antri);
+                // io.emit('loket',(msg, element.nomor_antri));
+            }
+        });
+        return;
+
+    });
     socket.on('cetak_antri', async (msg) => {
         let last = await getlastAntrian();
         let nomor_antri = 0;
@@ -116,6 +164,24 @@ io.on('connection', async (socket) => {
         cetakAntrian(nomor_antri);
         console.log('message: ' + msg);
         io.emit('nomor_antri', nomor_antri);
+        io.emit('btnCetak', false);
+    });
+    socket.on('cetak_antri_prioritas', async (msg) => {
+        let last = await prioritas.getlastAntrian();
+        let nomor_antri = 0;
+        if (last == undefined) {
+            nomor_antri = 1;
+        } else {
+            nomor_antri = last.nomor_antri + 1;
+        }
+        console.log('nomor_antri: ' + nomor_antri);
+        // let nomor_antri = last.nomor_antri + 1;
+        await prioritas.postAntrian(nomor_antri);
+        let sisaAntrian = await prioritas.getSisaAntrian();
+        io.emit('sisa_prioritas', sisaAntrian.sisa);
+        cetakAntrian(`${nomor_antri} P`);
+        console.log('message: ' + msg);
+        io.emit('nomor_antri_prioritas', nomor_antri);
         io.emit('btnCetak', false);
     });
     socket.on('suara', (msg) => {

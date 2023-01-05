@@ -106,6 +106,12 @@
         console.log(nomor_antri);
         document.getElementById(msg).innerHTML = nomor_antri;
     });
+    // Prioritas
+    socket.on('loket_prioritas', (msg, nomor_antri) => {
+                console.log(msg);
+                console.log(nomor_antri);
+                document.getElementById(msg).innerHTML = `<span style='color: red;'>${nomor_antri} P</span> `;
+            });
     socket.on("connect", () => {
         console.log(socket.connected); // true
         console.log(socket.id); // "G5p5..."
