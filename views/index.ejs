@@ -144,5 +144,33 @@
         console.log('sisa: ' + msg);
         document.getElementById("sisa").innerHTML = msg;
     });
+
+    socket.on('panggil_prioritas', (no, loket) => {
+        console.log("pangil : " + no + " Loket : " + loket);
+        new Audio('/asset/audio/suara/Prioritas.mp4').play();
+        setTimeout(() => {
+               number(no);
+        }, 3000);
+   
+    
+        console.log("Nomor antrian : " + no);
+      
+        if(no>100){
+            setTimeout(() => {
+            console.log("loket : " + loket);
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 8200);
+            setTimeout(() => {
+            angka(loket)
+        }, 8100);
+        } else{
+            setTimeout(() => {
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 6700);
+            setTimeout(() => {
+            console.log("loket : " + loket);
+            angka(loket)
+        }, 6900);}
+    });
 </script>
 <%- include('layout/footer') -%>

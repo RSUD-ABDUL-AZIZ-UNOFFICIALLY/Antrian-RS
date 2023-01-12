@@ -115,13 +115,13 @@ io.on('connection', async (socket) => {
     socket.on('next_antrian_prioritas', async (msg) => {
         console.log('next_antrian prioritas: ' + msg);
         let nextId = await prioritas.getNextId();
-        
         let uidPrioritas
         try {
             if (nextId == undefined) {
                 let id_antrian = await prioritas.antrianPertama();
+                console.log(id_antrian);
+                // return
                 uidPrioritas = id_antrian.uid;
-    
             } else {
                 uidPrioritas = nextId.uid + 1;
             }
@@ -129,7 +129,7 @@ io.on('connection', async (socket) => {
             console.log(error);
             return
         }
-        console.log('nextId: ' + uidPrioritas);
+        console.log('prioritas nextId : ' + uidPrioritas);
         await prioritas.updateAntrian(msg, uidPrioritas);
         let sisaAntrian = await prioritas.getSisaAntrian();
         io.emit('sisa_prioritas', sisaAntrian.sisa);
@@ -137,7 +137,7 @@ io.on('connection', async (socket) => {
         sisaLoketAntrian.forEach(element => {
             // console.log(element);
             if (element.loket == msg) {
-                let nextANT = [element.nomor_antri, element.loket];
+                let nextANT = [element.nomor_antri, element.loket,"prioritas"];
                 buffer.push(nextANT);
                 console.log("TES" + element.loket + " " + element.nomor_antri);
                 io.emit('loket_prioritas', element.loket, element.nomor_antri);   
@@ -185,16 +185,22 @@ io.on('connection', async (socket) => {
         io.emit('btnCetak', false);
     });
     socket.on('suara', (msg) => {
-        console.log("suara");
+        console.log("ulang suara");
         console.log(msg);
-        delay = 8000;
         buffer.push(msg);
-
+       
+        // let no = msg[0];
+        // let loket = msg[1];
+    });
+    socket.on('suara_prioritas', (msg) => {
+        console.log("ulang suara prioritas");
+        console.log(msg);
+        // buffer.push(msg);
+       
         // let no = msg[0];
         // let loket = msg[1];
         // io.emit("pangil", no, loket);
     });
-
 });
 let buffer = [];
 let delay = 1000;
@@ -202,9 +208,21 @@ function displayHello() {
     if (buffer.length > 0) {
         console.log(buffer);
         let msg = buffer.shift();
-        console.log(msg);
+        try {
+        
+            if (msg[2] == "prioritas") {
+                console.log("prioritas");
+                io.emit("panggil_prioritas", msg[0], msg[1]);
+                setTimeout(displayHello, delay);
+                return;
+            }
+        } catch (error) {
+            setTimeout(displayHello, delay);
+            return;
+        }
         let no = msg[0];
         let loket = msg[1];
+        console.log("ada");
         io.emit("pangil", no, loket);
         delay = 7500;
         setTimeout(displayHello, delay);
@@ -212,10 +230,21 @@ function displayHello() {
         delay = 1000;
         setTimeout(displayHello, delay);
     }
+    // while (buffer.length > 0) {
+    //     console.log(buffer);
+    //     let msg = buffer.shift();
+    //     console.log(msg);
+    //     let no = msg[0];
+    //     let loket = msg[1];
+    //     console.log("ada");
+    //     io.emit("pangil", no, loket);
+    //     delay = 7500;
+    //     setTimeout(displayHello, delay);
+    // } 
 }
+
+
 displayHello();
-
-
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`listening on *:${PORT}`);

@@ -122,8 +122,8 @@
                                     <button class="btn btn-block btn-raised btn-primary mb-3" id="nextPrioritas"
                                         onclick="nextPrioritas('<%-privilege%>')"><i class="mdi mdi-voice"></i> Panggil
                                         Berikutnya</button>
-                                    <button class="btn btn-block btn-raised btn-info mb-3" id="ulang"
-                                        onclick="ulangPangilan('<%-privilege%>')"><i class="mdi mdi-voice"></i>
+                                    <button class="btn btn-block btn-raised btn-info mb-3" id="ulangPrioritas"
+                                        onclick="ulangPangilanPrioritas('<%-privilege%>')"><i class="mdi mdi-voice"></i>
                                         Panggil
                                         Ulang
                                     </button>
@@ -187,6 +187,12 @@
                     btnNext.disabled = false;
                 }
             });
+            socket.on('panggil_prioritas', (no, loket) => {
+                if (loket == '<%-privilege%>') {
+                    btnUlangPrioritas.disabled = false;
+                    btnNextPrioritas.disabled = false;
+                }
+            });
 
             // Prioritas
             socket.on('loket_prioritas', (msg, nomor_antri) => {
@@ -201,27 +207,30 @@
                 document.getElementById("sisaPrioritas").innerHTML = msg;
             });
             let btnNextPrioritas = document.getElementById('nextPrioritas');
-            // let btnUlang = document.getElementById('ulang');
+            let btnUlangPrioritas = document.getElementById('ulangPrioritas');
 
             function nextPrioritas(id) {
                 console.log('next Prioritas Loket ' + id);
-                btnUlang.disabled = true;
-                btnNext.disabled = true;
+                btnUlangPrioritas.disabled = true;
+                btnNextPrioritas.disabled = true;
                 socket.emit("next_antrian_prioritas", id);
                 // let nomor = document.getElementById(id).innerHTML;
                 // let suara = [Math.floor(nomor) + 1, id];
                 // console.log(suara);
                 // socket.emit("suara", suara);
             }
-            // function ulangPangilan(id) {
-            //     console.log("pangilan");
-            //     btnUlang.disabled = true;
-            //     btnNext.disabled = true;
-            //     let nomor = document.getElementById(id).innerHTML;
-            //     let suara = [nomor, id];
-            //     console.log(suara);
-            //     socket.emit("suara", suara);
-            // }
+            function ulangPangilanPrioritas(id) {
+                console.log("pangilan Prioritas");
+                // btnUlangPrioritas.disabled = true;
+                // btnNextPrioritas.disabled = true;
+                let nomor = document.getElementById(id).innerHTML;
+                nomor = nomor.replace(' P', '');
+                console.log(nomor);
+
+                let suara = [nomor, id];
+                console.log(suara);
+                socket.emit("suara_prioritas", suara);
+            }
             // socket.on('pangil', (no, loket) => {
             //     if (loket == '<%-privilege%>') {
             //         btnUlang.disabled = false;
