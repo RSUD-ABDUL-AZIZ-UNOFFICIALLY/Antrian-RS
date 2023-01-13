@@ -49,7 +49,9 @@ io.on('connection', async (socket) => {
     io.emit('sisa', sisaAntrian.sisa);
     let sisaAntrianprioritas = await prioritas.getSisaAntrian();
     io.emit('sisa_prioritas', sisaAntrianprioritas.sisa);
-    console.log("sisaAntrian.sisa: " + sisaAntrian.sisa);
+    // console.log("sisaAntrian.sisa: " + sisaAntrian.sisa);
+    let totalsisa = sisaAntrian.sisa + sisaAntrianprioritas.sisa;
+    io.emit('totalsisa', totalsisa);
     let sisaLoketAntrian = await getAntrian();
     console.log(sisaLoketAntrian);
     sisaLoketAntrian.forEach(element => {
@@ -97,6 +99,10 @@ io.on('connection', async (socket) => {
         await updateAntrian(msg, uid);
         let sisaAntrian = await getSisaAntrian();
         io.emit('sisa', sisaAntrian.sisa);
+        let sisaAntrianprioritas = await prioritas.getSisaAntrian();
+        let totalsisa = sisaAntrian.sisa + sisaAntrianprioritas.sisa;
+        io.emit('totalsisa', totalsisa);
+
         let sisaLoketAntrian = await getAntrian();
         sisaLoketAntrian.forEach(element => {
             // console.log(element);
@@ -133,6 +139,9 @@ io.on('connection', async (socket) => {
         await prioritas.updateAntrian(msg, uidPrioritas);
         let sisaAntrian = await prioritas.getSisaAntrian();
         io.emit('sisa_prioritas', sisaAntrian.sisa);
+        let sisaAntrianX = await getSisaAntrian();
+        let totalsisa = sisaAntrian.sisa + sisaAntrianX.sisa;
+        io.emit('totalsisa', totalsisa);
         let sisaLoketAntrian = await prioritas.getAntrian();
         sisaLoketAntrian.forEach(element => {
             // console.log(element);
@@ -161,6 +170,9 @@ io.on('connection', async (socket) => {
         await postAntrian(nomor_antri);
         let sisaAntrian = await getSisaAntrian();
         io.emit('sisa', sisaAntrian.sisa);
+        let sisaAntrianprioritas = await prioritas.getSisaAntrian();
+        let totalsisa = sisaAntrian.sisa + sisaAntrianprioritas.sisa;
+        io.emit('totalsisa', totalsisa);
         cetakAntrian(nomor_antri);
         console.log('message: ' + msg);
         io.emit('nomor_antri', nomor_antri);
@@ -179,6 +191,9 @@ io.on('connection', async (socket) => {
         await prioritas.postAntrian(nomor_antri);
         let sisaAntrian = await prioritas.getSisaAntrian();
         io.emit('sisa_prioritas', sisaAntrian.sisa);
+        let sisaAntrianX = await getSisaAntrian();
+        let totalsisa = sisaAntrian.sisa + sisaAntrianX.sisa;
+        io.emit('totalsisa', totalsisa);
         cetakAntrian(`${nomor_antri} P`);
         console.log('message: ' + msg);
         io.emit('nomor_antri_prioritas', nomor_antri);
