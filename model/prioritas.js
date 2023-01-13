@@ -105,6 +105,27 @@ LIMIT 1`
     // console.log(result);
     return result[0];
 }
+replayAntrian = async function (loket) {
+    var sql =
+        `
+    SELECT
+	antrian_loket_prioritas.nomor_antri,
+	antrian_loket_prioritas.created_at,
+	antrian_loket_prioritas.uid 
+FROM
+	antrian_loket_prioritas 
+WHERE
+	antrian_loket_prioritas.updated_at LIKE ? 
+	AND antrian_loket_prioritas.loket = ?
+ORDER BY
+	antrian_loket_prioritas.nomor_antri DESC 
+	LIMIT 1
+    `
+    const result = await con.query(sql, [date_now, loket]);
+    // console.log(result);
+    return result[0];
+}
+
 
 module.exports = {
     getlastAntrian,
@@ -113,5 +134,6 @@ module.exports = {
     postAntrian,
     updateAntrian,
     getNextId,
-    antrianPertama
+    antrianPertama,
+    replayAntrian
 }

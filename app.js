@@ -192,10 +192,14 @@ io.on('connection', async (socket) => {
         // let no = msg[0];
         // let loket = msg[1];
     });
-    socket.on('suara_prioritas', (msg) => {
+    socket.on('suara_prioritas', async (msg) => {
         console.log("ulang suara prioritas");
-        console.log(msg);
-        // buffer.push(msg);
+        // console.log(msg[1]);
+        let nomorAntre = await prioritas.replayAntrian(msg[1]);
+        console.log(nomorAntre.nomor_antri);
+        let data = [nomorAntre.nomor_antri, msg[1], "prioritas"];
+        buffer.push(data);
+        io.emit("loket_prioritas", msg[1], nomorAntre.nomor_antri);
        
         // let no = msg[0];
         // let loket = msg[1];
