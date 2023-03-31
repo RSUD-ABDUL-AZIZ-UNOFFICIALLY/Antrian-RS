@@ -31,6 +31,7 @@ const { getlastAntrian,
     getNextId,
     antrianPertama } = require('./model/index');
 const prioritas = require('./model/prioritas');
+const { getDisplay, updateDisplay } = require('./model/display');
 const { cetakAntrian } = require('./usb.js');
 
 app.use("/asset/js/", express.static(path.join(__dirname + '/Public/js/')));
@@ -52,11 +53,20 @@ io.on('connection', async (socket) => {
     // console.log("sisaAntrian.sisa: " + sisaAntrian.sisa);
     let totalsisa = sisaAntrian.sisa + sisaAntrianprioritas.sisa;
     io.emit('totalsisa', totalsisa);
-    let sisaLoketAntrian = await getAntrian();
-    console.log(sisaLoketAntrian);
-    sisaLoketAntrian.forEach(element => {
+    // let sisaLoketAntrian = await getAntrian();
+    // console.log(sisaLoketAntrian);
+    // sisaLoketAntrian.forEach(element => {
+    //     console.log(element);
+    //     io.emit('loket', element.loket, element.nomor_antri);
+    // });
+    let display = await getDisplay();
+    display.forEach(element => {
         console.log(element);
-        io.emit('loket', element.loket, element.nomor_antri);
+        if (element.status == 'prioritas') {
+            io.emit('loket_prioritas', element.loket, element.nomor);
+        }else{
+        io.emit('loket', element.loket, element.nomor);
+        }
     });
 
     let last = await getlastAntrian();
@@ -109,6 +119,7 @@ io.on('connection', async (socket) => {
             if (element.loket == msg) {
                 let nextANT = [element.nomor_antri, element.loket];
                 buffer.push(nextANT);
+                updateDisplay(element.loket, element.nomor_antri, null)
                 console.log("TES" + element.loket + " " + element.nomor_antri);
                 io.emit('loket', element.loket, element.nomor_antri);   
                 // io.emit('panggil', element.loket, element.nomor_antri);
@@ -147,6 +158,7 @@ io.on('connection', async (socket) => {
             // console.log(element);
             if (element.loket == msg) {
                 let nextANT = [element.nomor_antri, element.loket,"prioritas"];
+                updateDisplay(element.loket, element.nomor_antri, "prioritas" )
                 buffer.push(nextANT);
                 console.log("TES" + element.loket + " " + element.nomor_antri);
                 io.emit('loket_prioritas', element.loket, element.nomor_antri);   
@@ -209,10 +221,11 @@ io.on('connection', async (socket) => {
     });
     socket.on('suara_prioritas', async (msg) => {
         console.log("ulang suara prioritas");
-        // console.log(msg[1]);
+        console.log(msg);
         let nomorAntre = await prioritas.replayAntrian(msg[1]);
         console.log(nomorAntre.nomor_antri);
         let data = [nomorAntre.nomor_antri, msg[1], "prioritas"];
+        updateDisplay(msg[1], nomorAntre.nomor_antri, "prioritas" )
         buffer.push(data);
         io.emit("loket_prioritas", msg[1], nomorAntre.nomor_antri);
        
