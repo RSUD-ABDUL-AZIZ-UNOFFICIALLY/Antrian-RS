@@ -249,10 +249,10 @@ function displayHello() {
         console.log(buffer);
         let msg = buffer.shift();
         try {
-        
             if (msg[2] == "prioritas") {
                 console.log("prioritas");
                 io.emit("panggil_prioritas", msg[0], msg[1]);
+                delay = 9500;
                 setTimeout(displayHello, delay);
                 return;
             }
