@@ -233,6 +233,14 @@ io.on('connection', async (socket) => {
         // let loket = msg[1];
         // io.emit("pangil", no, loket);
     });
+    socket.on('reset_loket', async (msg) => {
+        console.log("Reset");
+        for (let index = 1; index < 5; index++) {
+            io.emit('loket', index, 0);
+            updateDisplay(index, 0, null )
+            // console.log(index);
+         }
+    });
 });
 let buffer = [];
 let delay = 1000;
