@@ -43,7 +43,6 @@ module.exports = {
             next();
         } catch (err) {
             return res.redirect('/login');
-            // res.status(400).send('Invalid Token');
         }
     }
 }
