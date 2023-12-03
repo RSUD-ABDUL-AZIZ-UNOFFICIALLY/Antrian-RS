@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
-var bodyParser = require('body-parser')
-var cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const app = express();
 
 const http = require('http');
@@ -50,15 +50,8 @@ io.on('connection', async (socket) => {
     io.emit('sisa', sisaAntrian.sisa);
     let sisaAntrianprioritas = await prioritas.getSisaAntrian();
     io.emit('sisa_prioritas', sisaAntrianprioritas.sisa);
-    // console.log("sisaAntrian.sisa: " + sisaAntrian.sisa);
     let totalsisa = sisaAntrian.sisa + sisaAntrianprioritas.sisa;
     io.emit('totalsisa', totalsisa);
-    // let sisaLoketAntrian = await getAntrian();
-    // console.log(sisaLoketAntrian);
-    // sisaLoketAntrian.forEach(element => {
-    //     console.log(element);
-    //     io.emit('loket', element.loket, element.nomor_antri);
-    // });
     let display = await getDisplay();
     display.forEach(element => {
         console.log(element);
@@ -71,18 +64,14 @@ io.on('connection', async (socket) => {
 
     let last = await getlastAntrian();
     let nomor_antri = 0;
-    if (last == undefined) {
-        nomor_antri = 0;
-    } else {
+    if (last !== undefined) {
         nomor_antri = last.nomor_antri;
     }
     let totolAntrian = nomor_antri;
     io.emit('nomor_antri', totolAntrian);
     let last_prioritas = await prioritas.getlastAntrian();
     let nomor_antri_prioritas = 0;
-    if (last_prioritas == undefined) {
-        nomor_antri_prioritas = 0;
-    } else {
+    if (last_prioritas !== undefined) {
         nomor_antri_prioritas = last_prioritas.nomor_antri;
     }
     let totolAntrianprioritas = nomor_antri_prioritas;
@@ -91,7 +80,6 @@ io.on('connection', async (socket) => {
     socket.on('next_antrian', async (msg) => {
         console.log('next_antrian: ' + msg);
         let nextId = await getNextId();
-        // console.log(nextId);
         let uid
         try {
             if (nextId == undefined) {
@@ -102,7 +90,7 @@ io.on('connection', async (socket) => {
                 uid = nextId.uid + 1;
             }
         } catch (error) {
-            // console.log(error);
+            console.log(error);
             return
         }
         console.log('nextId: ' + uid);
@@ -115,19 +103,14 @@ io.on('connection', async (socket) => {
 
         let sisaLoketAntrian = await getAntrian();
         sisaLoketAntrian.forEach(element => {
-            // console.log(element);
             if (element.loket == msg) {
                 let nextANT = [element.nomor_antri, element.loket];
                 buffer.push(nextANT);
                 updateDisplay(element.loket, element.nomor_antri, null)
                 console.log("TES" + element.loket + " " + element.nomor_antri);
                 io.emit('loket', element.loket, element.nomor_antri);   
-                // io.emit('panggil', element.loket, element.nomor_antri);
-                // io.emit('loket',(msg, element.nomor_antri));
             }
         });
-        return;
-
     });
     socket.on('next_antrian_prioritas', async (msg) => {
         console.log('next_antrian prioritas: ' + msg);
@@ -155,19 +138,14 @@ io.on('connection', async (socket) => {
         io.emit('totalsisa', totalsisa);
         let sisaLoketAntrian = await prioritas.getAntrian();
         sisaLoketAntrian.forEach(element => {
-            // console.log(element);
             if (element.loket == msg) {
                 let nextANT = [element.nomor_antri, element.loket,"prioritas"];
                 updateDisplay(element.loket, element.nomor_antri, "prioritas" )
                 buffer.push(nextANT);
                 console.log("TES" + element.loket + " " + element.nomor_antri);
                 io.emit('loket_prioritas', element.loket, element.nomor_antri);   
-                // io.emit('panggil', element.loket, element.nomor_antri);
-                // io.emit('loket',(msg, element.nomor_antri));
             }
         });
-        return;
-
     });
     socket.on('cetak_antri', async (msg) => {
         let last = await getlastAntrian();
@@ -178,7 +156,6 @@ io.on('connection', async (socket) => {
             nomor_antri = last.nomor_antri + 1;
         }
         console.log('nomor_antri: ' + nomor_antri);
-        // let nomor_antri = last.nomor_antri + 1;
         await postAntrian(nomor_antri);
         let sisaAntrian = await getSisaAntrian();
         io.emit('sisa', sisaAntrian.sisa);
@@ -199,7 +176,6 @@ io.on('connection', async (socket) => {
             nomor_antri = last.nomor_antri + 1;
         }
         console.log('nomor_antri: ' + nomor_antri);
-        // let nomor_antri = last.nomor_antri + 1;
         await prioritas.postAntrian(nomor_antri);
         let sisaAntrian = await prioritas.getSisaAntrian();
         io.emit('sisa_prioritas', sisaAntrian.sisa);
@@ -215,9 +191,6 @@ io.on('connection', async (socket) => {
         console.log("ulang suara");
         console.log(msg);
         buffer.push(msg);
-       
-        // let no = msg[0];
-        // let loket = msg[1];
     });
     socket.on('suara_prioritas', async (msg) => {
         console.log("ulang suara prioritas");
@@ -228,17 +201,12 @@ io.on('connection', async (socket) => {
         updateDisplay(msg[1], nomorAntre.nomor_antri, "prioritas" )
         buffer.push(data);
         io.emit("loket_prioritas", msg[1], nomorAntre.nomor_antri);
-       
-        // let no = msg[0];
-        // let loket = msg[1];
-        // io.emit("pangil", no, loket);
     });
     socket.on('reset_loket', async (msg) => {
         console.log("Reset");
         for (let index = 1; index < 5; index++) {
             io.emit('loket', index, 0);
-            updateDisplay(index, 0, null )
-            // console.log(index);
+            updateDisplay(index, 0, null)
          }
     });
 });
@@ -270,17 +238,6 @@ function displayHello() {
         delay = 1000;
         setTimeout(displayHello, delay);
     }
-    // while (buffer.length > 0) {
-    //     console.log(buffer);
-    //     let msg = buffer.shift();
-    //     console.log(msg);
-    //     let no = msg[0];
-    //     let loket = msg[1];
-    //     console.log("ada");
-    //     io.emit("pangil", no, loket);
-    //     delay = 7500;
-    //     setTimeout(displayHello, delay);
-    // } 
 }
 
 
