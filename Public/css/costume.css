@@ -13,6 +13,9 @@
     margin: 4px 2px;
     /* cursor: pointer; */
 }
+body{
+    background-image: '/asset/img/rsud-abdul-aziz.jpg';
+}
 
 .text-cetak {
     font-size: 30px;
@@ -21,6 +24,13 @@
     text-align: center;
     width: 300px;
     display: inline-block;
+}
+.box-pangil{
+    height: 250px;
+    width: 550px;
+}
+.box-loket{
+    height: auto;
 }
 
 hx {

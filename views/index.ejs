@@ -39,6 +39,16 @@
                             <div class="col-4">
                                 <div class="row">
                                     <div class="col-12">
+                                        <div class="card m-b-30 text-center">
+                                            <div class="h2 card-header text-white bg-success">
+                                                <hx2>Sisa Antian</hx2>
+                                            </div>
+                                            <div class="card-body">
+                                                <hx id="sisa">-</hx>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
                                         <div class="card m-b-30 h-360">
                                             <div class="card-body">
                                                 <div class="video-container">
@@ -96,6 +106,12 @@
         console.log(nomor_antri);
         document.getElementById(msg).innerHTML = nomor_antri;
     });
+    // Prioritas
+    socket.on('loket_prioritas', (msg, nomor_antri) => {
+                console.log(msg);
+                console.log(nomor_antri);
+                document.getElementById(msg).innerHTML = `<span style='color: red;'>${nomor_antri} P</span> `;
+            });
     socket.on("connect", () => {
         console.log(socket.connected); // true
         console.log(socket.id); // "G5p5..."
@@ -123,6 +139,38 @@
             angka(loket)
         }, 3900);}
      
+    });
+    socket.on('totalsisa', (msg) => {
+        console.log('sisa: ' + msg);
+        document.getElementById("sisa").innerHTML = msg;
+    });
+
+    socket.on('panggil_prioritas', (no, loket) => {
+        console.log("pangil : " + no + " Loket : " + loket);
+        new Audio('/asset/audio/suara/Prioritas.mp4').play();
+        setTimeout(() => {
+               angka(no);
+        }, 2800);
+   
+    
+        console.log("Nomor antrian : " + no);
+      
+        if(no>100){
+            setTimeout(() => {
+            console.log("loket : " + loket);
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 8200);
+            setTimeout(() => {
+            angka(loket)
+        }, 8100);
+        } else{
+            setTimeout(() => {
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 6700);
+            setTimeout(() => {
+            console.log("loket : " + loket);
+            angka(loket)
+        }, 6900);}
     });
 </script>
 <%- include('layout/footer') -%>
