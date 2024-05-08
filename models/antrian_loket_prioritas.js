@@ -14,8 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Antrian_loket_prioritas.init({
-    nomor_antri: DataTypes.STRING,
-    loket: DataTypes.STRING
+    nomor_antri: DataTypes.INTEGER,
+    loket: DataTypes.STRING,
+    updatedAt: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'Antrian_loket_prioritas',

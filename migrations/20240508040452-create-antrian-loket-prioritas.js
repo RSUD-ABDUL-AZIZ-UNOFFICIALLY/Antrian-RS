@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nomor_antri: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       loket: {
         type: Sequelize.STRING
