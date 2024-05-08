@@ -1,6 +1,6 @@
 {
   "name": "antrian",
-  "version": "1.2.0",
+  "version": "1.4.4",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -26,6 +26,8 @@
     "mysql": "^2.18.1",
     "node-windows": "^1.0.0-beta.8",
     "nodemon": "^2.0.20",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2",
     "socket.io": "^4.5.2"
   }
 }
