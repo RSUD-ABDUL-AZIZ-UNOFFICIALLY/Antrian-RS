@@ -3,3 +3,4 @@ tes.js
 package-lock.json
 .env
 **/daemon
+resume.json
