@@ -13,6 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
         primaryKey: true,
         allowNull: false,
+        unique: true
       },
       level: {
         type: Sequelize.STRING

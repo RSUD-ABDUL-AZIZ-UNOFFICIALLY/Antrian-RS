@@ -17,12 +17,13 @@ module.exports = {
       },
       privilege: {
         type: Sequelize.STRING,
+        primaryKey: true,
         references: {
-          model: 'Level_tbs',
+          model: {
+            tableName: 'Level_tbs'
+          },
           key: 'kode'
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
+        }
       },
       createdAt: {
         allowNull: false,

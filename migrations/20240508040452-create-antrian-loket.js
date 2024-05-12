@@ -24,6 +24,10 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.addIndex('Antrian_lokets', ['nomor_antri', 'createdAt'], {
+      unique: true,
+      name: 'unique_nomor_antri_createdAt' // Nama indeks unik
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Antrian_lokets');

@@ -10,10 +10,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       loket: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {
+          model: {
+            tableName: 'Level_tbs'
+          },
+          key: 'kode'
+        }
       },
       nomor: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       status: {
         type: Sequelize.STRING
