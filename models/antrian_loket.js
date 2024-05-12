@@ -16,9 +16,15 @@ module.exports = (sequelize, DataTypes) => {
   Antrian_loket.init({
     nomor_antri: DataTypes.INTEGER,
     loket: DataTypes.STRING,
-    updatedAt: DataTypes.DATE,
+    createdAt: DataTypes.DATE,
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
+    }
+
   }, {
     sequelize,
+    timestamps: false,
     modelName: 'Antrian_loket',
   });
   return Antrian_loket;

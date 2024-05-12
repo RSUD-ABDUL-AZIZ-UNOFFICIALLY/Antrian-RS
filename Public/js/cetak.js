@@ -1,5 +1,3 @@
-console.log('Hello World!');
-// var socket = io();
 const socket = io();
 let counter = 1;
 socket.on("connect", () => {

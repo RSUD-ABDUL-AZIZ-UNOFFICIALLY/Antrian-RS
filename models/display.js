@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Display.init({
     loket: DataTypes.STRING,
-    nomor: DataTypes.STRING,
+    nomor: DataTypes.INTEGER,
     status: DataTypes.STRING
   }, {
     sequelize,
