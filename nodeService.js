@@ -7,7 +7,7 @@ var svc = new Service({
     script: process.env.PATH_NODE_SERVICE,
     nodeOptions: [
         '--harmony',
-        '--max_old_space_size=4096'
+        '--max_old_space_size=1024'
     ]
     //, workingDirectory: '...'
     //, allowServiceLogon: true
