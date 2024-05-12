@@ -13,4 +13,4 @@ DB_USERNAME="root"
 DB_PASSWORD=""
 DB_NAME="antrian"
 DB_PORT=3306
-DB_DIALECT=mariadbgit 
+DB_DIALECT=mariadb
