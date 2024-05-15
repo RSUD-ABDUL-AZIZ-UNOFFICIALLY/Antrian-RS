@@ -189,51 +189,40 @@ io.on('connection', async (socket) => {
 
     });
     socket.on('suara', async (msg) => {
-        let dateNow = new Date().toISOString().slice(0, 10);
-        let belum = await Antrian_loket.findOne({
+        let queueNow = await Display.findOne({
             where: {
-                createdAt: {
-                    [Op.startsWith]: dateNow
-                },
-                updatedAt: null
+                loket: msg,
+                status: null
             },
-            order: [
-                ['nomor_antri', 'ASC']
-            ],
-            attributes: ['nomor_antri']
+            attributes: ['nomor']
         });
-        let nomor_antri = belum == null ? 1 : belum.nomor_antri;
-        await Display.update({ nomor: nomor_antri, status: null }, {
-            where: {
-                loket: msg
-            }
-        });
-        io.emit('loket', msg, nomor_antri);
+        if (queueNow != null) {
+
+            console.log(queueNow);
+            let nomor_antri = queueNow.nomor;
         buffer.push([nomor_antri, msg, "loket"]);
+        } else {
+            io.emit('antiranHabis', 'Maaf Sekarang Antiran Prioritas', msg);
+        }
+
     });
     socket.on('suara_prioritas', async (msg) => {
         let dateNow = new Date().toISOString().slice(0, 10);
-        let belum = await Antrian_loket_prioritas.findOne({
+        let queueNow = await Display.findOne({
             where: {
-                createdAt: {
-                    [Op.startsWith]: dateNow
-                },
-                updatedAt: null
+                loket: msg,
+                status: "prioritas"
             },
-            order: [
-                ['nomor_antri', 'ASC']
-            ],
-            attributes: ['nomor_antri']
+            attributes: ['nomor']
         });
+        if (queueNow != null) {
 
-        let nomor_antri = belum == null ? 1 : belum.nomor_antri;
-        await Display.update({ nomor: nomor_antri, status: "prioritas" }, {
-            where: {
-                loket: msg
-            }
-        });
-        io.emit('loket_prioritas', msg, nomor_antri);
-        buffer.push([nomor_antri, msg, "prioritas"]);
+            console.log(queueNow);
+            let nomor_antri = queueNow.nomor;
+            buffer.push([nomor_antri, msg, "loket"]);
+        } else {
+            io.emit('antiranHabis', 'Maaf Sekarang Antiran Biasa Aja', msg);
+        }
     });
     socket.on('reset_loket', async (msg) => {
         for (let index = 1; index < 5; index++) {
