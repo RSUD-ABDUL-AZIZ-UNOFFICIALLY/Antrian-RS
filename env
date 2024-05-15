@@ -14,3 +14,4 @@ DB_PASSWORD=""
 DB_NAME="antrian"
 DB_PORT=3306
 DB_DIALECT=mariadb
+NODE_ENV=prouction
