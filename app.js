@@ -219,7 +219,7 @@ io.on('connection', async (socket) => {
 
             console.log(queueNow);
             let nomor_antri = queueNow.nomor;
-            buffer.push([nomor_antri, msg, "loket"]);
+            buffer.push([nomor_antri, msg, "prioritas"]);
         } else {
             io.emit('antiranHabis', 'Maaf Sekarang Antiran Biasa Aja', msg);
         }
