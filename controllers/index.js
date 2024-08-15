@@ -18,7 +18,6 @@ module.exports = {
             loket: verified.level,
             privilege: verified.privilege
         }
-        // console.log(data);
         res.render('admin', data)
     },
     cetakAntriann: async (req, res) => {
@@ -28,8 +27,7 @@ module.exports = {
             res.render('cetak', { title: "ANTREAN LOKET" })
             return;
         }
-        res.redirect('/login');
         console.log('bukan admin cetak');
-        return;
+        return res.redirect('/login');
     }
 };

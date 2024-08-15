@@ -62,8 +62,6 @@
                             <div class="card-body  text-center">
                                 <div class="row text-center profile-block">
                                     <div class="col-4 align-self-center py-2 border-right">
-                                        <!-- <img src="/asset/img/logo-RSUD.jpg" alt=""
-                                            class="rounded-circle mx-auto d-block w-25"> -->
                                             <div class="card-body">
                                                 <button class="btn btn-block btn-raised btn-danger" id="reset"
                                                     onclick="resetLoket()"></i> Reset Loket</button>
@@ -90,12 +88,6 @@
                                         onclick="ulangPangilan('<%-privilege%>')"><i class="mdi mdi-voice"></i>
                                         Panggil
                                         Ulang</button>
-                                    <!-- <button class="btn btn-block btn-raised btn-success mb-3"><i
-                                    class="mdi mdi-account-check"></i> Selesai Dilayani</button>
-                            <button class="btn btn-block btn-raised btn-danger mb-3"><i
-                                    class="mdi mdi-account-remove"></i> Tidak Hadir</button>
-                            <button class="btn btn-block btn-raised text-white bg-dark mb-3"><i
-                                    class="mdi mdi-account-convert"></i> Lewati</button> -->
                                 </div>
 
                             </div>
@@ -142,108 +134,9 @@
     </div>
     <!-- end wrapper -->
     <%- include('layout/script') -%>
-        <script src="/asset/js/audio.js"></script>
-        <script>
-            const socket = io();
-            socket.on("connect", () => {
-                console.log(socket.connected); // true
-                console.log(socket.id); // "G5p5..."
-                socket.emit("UpdateLoket", "");
-            });
-            socket.on('loket', (msg, nomor_antri) => {
-                console.log(msg);
-                console.log(nomor_antri);
-                document.getElementById(msg).innerHTML = nomor_antri;
-            });
-            socket.on('nomor_antri', (msg) => {
-                console.log("Nomor antri yang tercetak : " + msg);
-                document.getElementById("total").innerHTML = msg;
-            });
-            socket.on('sisa', (msg) => {
-                console.log('sisa: ' + msg);
-                document.getElementById("sisa").innerHTML = msg;
-            });
-            let btnNext = document.getElementById('next');
-            let btnUlang = document.getElementById('ulang');
-
-            function next(id) {
-                console.log('next ' + id);
-                btnUlang.disabled = true;
-                btnNext.disabled = true;
-                socket.emit("next_antrian", id);
-                // let nomor = document.getElementById(id).innerHTML;
-                // let suara = [Math.floor(nomor) + 1, id];
-                // console.log(suara);
-                // socket.emit("suara", suara);
-            }
-            function ulangPangilan(id) {
-                console.log("pangilan");
-                btnUlang.disabled = true;
-                btnNext.disabled = true;
-                let nomor = document.getElementById(id).innerHTML;
-                let suara = [nomor, id];
-                console.log(suara);
-                socket.emit("suara", suara);
-            }
-            socket.on('pangil', (no, loket) => {
-                if (loket == '<%-privilege%>') {
-                    btnUlang.disabled = false;
-                    btnNext.disabled = false;
-                }
-            });
-            socket.on('panggil_prioritas', (no, loket) => {
-                if (loket == '<%-privilege%>') {
-                    btnUlangPrioritas.disabled = false;
-                    btnNextPrioritas.disabled = false;
-                }
-            });
-
-            // Prioritas
-            socket.on('loket_prioritas', (msg, nomor_antri) => {
-                document.getElementById(msg).innerHTML = `<span style='color: red;'>${nomor_antri} P</span> `;
-            });
-            socket.on('nomor_antri_prioritas', (msg) => {
-                console.log("Nomor antri yang tercetak : " + msg);
-                document.getElementById("totalPrioritas").innerHTML = msg;
-            });
-            socket.on('sisa_prioritas', (msg) => {
-                console.log('sisa prioritas: ' + msg);
-                document.getElementById("sisaPrioritas").innerHTML = msg;
-            });
-            let btnNextPrioritas = document.getElementById('nextPrioritas');
-            let btnUlangPrioritas = document.getElementById('ulangPrioritas');
-
-            function nextPrioritas(id) {
-                console.log('next Prioritas Loket ' + id);
-                btnUlangPrioritas.disabled = true;
-                btnNextPrioritas.disabled = true;
-                socket.emit("next_antrian_prioritas", id);
-                // let nomor = document.getElementById(id).innerHTML;
-                // let suara = [Math.floor(nomor) + 1, id];
-                // console.log(suara);
-                // socket.emit("suara", suara);
-            }
-            function ulangPangilanPrioritas(id) {
-                console.log("pangilan Prioritas");
-                // btnUlangPrioritas.disabled = true;
-                // btnNextPrioritas.disabled = true;
-                let nomor = document.getElementById(id).innerHTML;
-                nomor = nomor.replace(' P', '');
-                console.log(nomor);
-
-                let suara = [nomor, id];
-                console.log(suara);
-                socket.emit("suara_prioritas", suara);
-            }
-            function resetLoket() {
-                socket.emit("reset_loket");
-            }
-            // socket.on('pangil', (no, loket) => {
-            //     if (loket == '<%-privilege%>') {
-            //         btnUlang.disabled = false;
-            //         btnNext.disabled = false;
-            //     }
-            // });
-
-        </script>
+    <script>
+        let level = '<%-privilege%>';
+      </script>
+    <script src="/asset/js/audio.js"></script>
+    <script src="/asset/js/admin.js"></script>
         <%- include('layout/footer') -%>

@@ -53,7 +53,6 @@
                                             <div class="card-body">
                                                 <div class="video-container">
                                                     <video id="videos" controls autoplay loop muted="muted">
-                                                        <!-- <source id="video" src="{!! asset('theme/assets/video/video.mp4') !!}" type="video/mp4"> -->
                                                         <source id="video" src="/asset/audio/pendaftaran.mp4" type="video/mp4">
                                                     </video>
                                                 </div>
@@ -102,14 +101,12 @@
 <script>
     const socket = io();
     socket.on('loket', (msg, nomor_antri) => {
-        console.log(msg);
-        console.log(nomor_antri);
+
         document.getElementById(msg).innerHTML = nomor_antri;
     });
     // Prioritas
     socket.on('loket_prioritas', (msg, nomor_antri) => {
-                console.log(msg);
-                console.log(nomor_antri);
+
                 document.getElementById(msg).innerHTML = `<span style='color: red;'>${nomor_antri} P</span> `;
             });
     socket.on("connect", () => {
@@ -140,8 +137,7 @@
         }, 3900);}
      
     });
-    socket.on('totalsisa', (msg) => {
-        console.log('sisa: ' + msg);
+            socket.on('totalsisa', (msg) => {
         document.getElementById("sisa").innerHTML = msg;
     });
 

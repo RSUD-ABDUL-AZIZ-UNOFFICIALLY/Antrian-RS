@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nomor_antri: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       loket: {
         type: Sequelize.STRING
@@ -23,6 +23,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.DATE
       }
+    });
+    await queryInterface.addIndex('Antrian_lokets', ['nomor_antri', 'createdAt'], {
+      unique: true,
+      name: 'unique_nomor_antri_createdAt' // Nama indeks unik
     });
   },
   async down(queryInterface, Sequelize) {

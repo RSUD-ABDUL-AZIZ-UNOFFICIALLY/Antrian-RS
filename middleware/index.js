@@ -1,12 +1,22 @@
-const { login } = require('../model/auth');
+const { tr } = require('date-fns/locale');
+const { Admin_tb } = require('../models');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
     masuk: async (req, res) => {
+        try {
         const { username, password } = req.body;
-        console.log(username, password);
-        const user = await login(username, password);
-        console.log(user);
+            if (!username || !password) {
+                res.redirect('/login');
+                return;
+            }
+            const user = await Admin_tb.findOne({
+                where: {
+                    user: username,
+                    password: password
+                }
+            });
+
         if (user == undefined) {
             res.redirect('/login');
         } else {
@@ -19,13 +29,15 @@ module.exports = {
 
             const token = jwt.sign(data, process.env.TOKEN_SECRET);
             res.cookie('token', token, { expires: new Date(Date.now() + (1000 * 3600 * 24 * 30 * 24)) });
-            if (user.privilege <= 6) {
-                res.redirect('/admin');
-                return;
-            } else if (user.privilege == 'ANT') {
+            if (user.privilege == 'ANT') {
                 res.redirect('/cetak');
                 return;
             }
+            res.redirect('/admin');
+            return;
+        }
+        } catch (err) {
+            console.log(err);
             res.redirect('/login');
         }
     },
