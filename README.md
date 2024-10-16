@@ -23,3 +23,17 @@ Untuk menjalankan proyek ini, Anda perlu menambahkan variabel lingkungan berikut
 
 - [Fakhry Hizballah](https://github.com/fakhryhizballah/)
 - [@hizballah_al](https://www.instagram.com/hizballah_al/)
+
+
+## NB
+go to node_modules/escpos-usb/index.js
+comment down the following lines
+```
+  // usb.on('detach', function(device){
+  //   if(device == self.device) {
+  //     self.emit('detach'    , device);
+  //     self.emit('disconnect', device);
+  //     self.device = null;
+  //   }
+  // });
+```
