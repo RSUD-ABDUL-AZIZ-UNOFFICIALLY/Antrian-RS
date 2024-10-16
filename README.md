@@ -26,8 +26,8 @@ Untuk menjalankan proyek ini, Anda perlu menambahkan variabel lingkungan berikut
 
 
 ## NB
-go to node_modules/escpos-usb/index.js
-comment down the following lines
+- go to node_modules/escpos-usb/index.js
+- comment down the following lines
 ```
   // usb.on('detach', function(device){
   //   if(device == self.device) {
