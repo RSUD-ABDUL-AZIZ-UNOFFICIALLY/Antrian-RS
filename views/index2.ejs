@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Display</title>
+    <link href="/asset/css/main.css" rel="stylesheet">
+</head>
+<body class="bg-white font-sans">
+
+ <!-- Header -->
+  <div class="flex items-center justify-between p-4 border-b">
+    <div class="flex items-center space-x-4">
+      <img src="/asset/img/logo-RSUD.jpg" alt="Logo RSUD" class="w-16 h-16" />
+      <h1 class="text-4xl font-bold">RUMAH SAKIT UMUM DAERAH dr. ABDUL AZIZ SINGKAWANG</h1>
+    </div>
+    <div class="text-right text-lg">
+      <p id="tanggal">Jum'at, 11 April 2025</p>
+      <p id="waktu">9:47</p>
+    </div>
+  </div>
+
+  <!-- Judul Antrian -->
+  <div class="bg-teal-600 text-white text-center py-2 font-bold text-3xl">
+    ANTRIAN DIPANGGIL
+  </div>
+
+  <!-- Grid Antrian -->
+  <div class="grid grid-cols-3 gap-4 p-4">
+    
+    <!-- Loket 1 -->
+    <div class="bg-white border shadow rounded-lg p-4 text-center">
+      <h2 class="text-teal-700 font-bold text-4xl mb-2">Loket 1</h2>
+      <p class="text-red-600 text-9xl font-extrabold" id="1">x</p>
+    </div>
+
+    <!-- Sisa Antrian -->
+    <div class="bg-white border shadow rounded-lg p-4 text-center">
+      <h2 class="text-teal-700 font-bold text-4xl mb-2">Sisa Antrian</h2>
+      <p class="text-black text-9xl font-extrabold" id="sisa">x</p>
+    </div>
+
+    <!-- Loket 3 -->
+    <div class="bg-white border shadow rounded-lg p-4 text-center">
+      <h2 class="text-teal-700 font-bold text-4xl mb-2">Loket 3</h2>
+      <p class="text-black text-9xl font-extrabold"id="3">x</p>
+    </div>
+
+    <!-- Loket 2 -->
+    <div class="bg-white border shadow rounded-lg p-4 text-center">
+      <h2 class="text-teal-700 font-bold text-4xl mb-2">Loket 2</h2>
+      <p class="text-black text-9xl font-extrabold" id="2">x</p>
+    </div>
+
+    <!-- Gambar (opsional) -->
+    <div class="bg-gray-100 border shadow rounded-lg flex items-center justify-center p-4">
+        <video id="videos" controls autoplay loop muted="muted">
+            <source id="video" src="/asset/audio/pendaftaran.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Loket 4 -->
+    <div class="bg-white border shadow rounded-lg p-4 text-center">
+      <h2 class="text-teal-700 font-bold text-4xl mb-2">Loket 4</h2>
+      <p class="text-black text-9xl font-extrabold" id="4">x</p>
+    </div>
+  </div>
+
+    <!-- <div class="video-section">
+        <iframe src="https://www.youtube.com/embed/example" frameborder="0" allowfullscreen></iframe>
+    </div> -->
+<script src="/asset/js/audio2.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    socket.on('loket', (msg, nomor_antri) => {
+
+        document.getElementById(msg).innerHTML = nomor_antri;
+    });
+    // Prioritas
+    socket.on('loket_prioritas', (msg, nomor_antri) => {
+
+                document.getElementById(msg).innerHTML = `<span style='color: red;'>${nomor_antri} P</span> `;
+            });
+    socket.on("connect", () => {
+        console.log(socket.connected); // true
+        console.log(socket.id); // "G5p5..."
+        socket.emit("UpdateLoket", "");
+    });
+    socket.on('pangil', (no, loket) => {
+        console.log("pangil : " + no + " Loket : " + loket);
+        number(no);
+        console.log("Nomor antrian : " + no);
+      
+        if(no>100){
+            setTimeout(() => {
+            console.log("loket : " + loket);
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 5200);
+            setTimeout(() => {
+            angka(loket)
+        }, 5100);
+        } else{
+            setTimeout(() => {
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 3700);
+            setTimeout(() => {
+            console.log("loket : " + loket);
+            angka(loket)
+        }, 3900);}
+     
+    });
+            socket.on('totalsisa', (msg) => {
+        document.getElementById("sisa").innerHTML = msg;
+    });
+
+    socket.on('panggil_prioritas', (no, loket) => {
+        console.log("pangil : " + no + " Loket : " + loket);
+        new Audio('/asset/audio/suara/Prioritas.mp4').play();
+        setTimeout(() => {
+               angka(no);
+        }, 2800);
+   
+    
+        console.log("Nomor antrian : " + no);
+      
+        if(no>100){
+            setTimeout(() => {
+            console.log("loket : " + loket);
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 8200);
+            setTimeout(() => {
+            angka(loket)
+        }, 8100);
+        } else{
+            setTimeout(() => {
+            new Audio('/asset/audio/suara/loket.wav').play();
+        }, 6700);
+            setTimeout(() => {
+            console.log("loket : " + loket);
+            angka(loket)
+        }, 6900);}
+    });
+</script>
+<script>
+    setInterval(() => {
+        var attBul = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
+        var attHar = ["-", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu"]
+        var date = new Date()
+        var detik = date.getSeconds()
+        var menit = date.getMinutes()
+        var jam = date.getHours()
+        var hari = date.getDay()
+        var tanggal = date.getDate()
+        var bulan = date.getMonth()
+        var tahun = date.getFullYear()
+        document.getElementById('waktu').innerHTML =jam+":"+menit+":"+detik
+        document.getElementById('tanggal').innerHTML = attHar[hari]+" ,"+tanggal+" "+attBul[bulan]+" "+tahun
+    }, 1000);
+</script>
+</body>
+</html>

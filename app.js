@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 const path = require('path');
 
 
-const { Antrian_loket, Display, Antrian_loket_prioritas } = require('./models');
+const { Antrian_loket, Display, Antrian_loket_prioritas, Antrian_loket_a } = require('./models');
 const { Op } = require('sequelize');
 const { cetakAntrian } = require('./usb.js');
 
@@ -121,6 +121,41 @@ io.on('connection', async (socket) => {
         }
 
     });
+    socket.on('next_antrian_atas', async (msg) => {
+        let dateNow = new Date().toISOString().slice(0, 10);
+        let last = await Antrian_loket_a.findOne({
+            where: {
+                createdAt: {
+                    [Op.startsWith]: dateNow
+                },
+                updatedAt: null
+            },
+            order: [
+                ['nomor_antri', 'asc']
+            ],
+            attributes: ['id', 'nomor_antri']
+        });
+        let nomor_antri = last == null ? 1 : last.nomor_antri;
+        try {
+            await Antrian_loket_a.update({ loket: msg, updatedAt: new Date() }, {
+                where: {
+                    id: last.id
+                }
+            });
+            await Display.update({ nomor: nomor_antri, status: null }, {
+                where: {
+                    loket: msg
+                }
+            });
+            totalSisa();
+            io.emit('loket', msg, nomor_antri);
+            buffer2.push([nomor_antri, msg, "loket"]);
+        } catch (error) {
+            console.log("error");
+            io.emit('antiranHabis', 'Antrian Prioritas Habis', msg);
+        }
+
+    });
     socket.on('cetak_antri', async (msg) => {
         let dateNow = new Date().toISOString().slice(0, 10);
         let last = await Antrian_loket.findOne({
@@ -186,6 +221,58 @@ io.on('connection', async (socket) => {
         totalSisa();
         io.emit('sisa_prioritas', sisaAntrian);
         io.emit('btnCetak', false);
+
+    });
+    socket.on('cetak_antri_atas', async (msg) => {
+        let dateNow = new Date().toISOString().slice(0, 10);
+        let last = await Antrian_loket_a.findOne({
+            where: {
+                createdAt: {
+                    [Op.startsWith]: dateNow
+                }
+            },
+            order: [
+                ['nomor_antri', 'DESC']
+            ],
+            attributes: ['nomor_antri']
+        });
+        let nomor_antri = last == null ? 1 : last.nomor_antri + 1;
+        await Antrian_loket_a.create({
+            nomor_antri: nomor_antri,
+            createdAt: new Date(),
+            updatedAt: null
+        });
+        io.emit('nomor_antri_atas', nomor_antri);
+        let sisaAntrian = await Antrian_loket_a.count({
+            where: {
+                createdAt: {
+                    [Op.startsWith]: dateNow
+                },
+                updatedAt: null
+            }
+        });
+        await cetakAntrian(nomor_antri + " A");
+        totalSisa();
+        io.emit('sisa_atas', sisaAntrian);
+        io.emit('btnCetak', false);
+
+    });
+    socket.on('suara_atas', async (msg) => {
+        let queueNow = await Display.findOne({
+            where: {
+                loket: msg,
+                status: null
+            },
+            attributes: ['nomor']
+        });
+        if (queueNow != null) {
+
+            console.log(queueNow);
+            let nomor_antri = queueNow.nomor;
+            buffer2.push([nomor_antri, msg, "loket"]);
+        } else {
+            io.emit('antiranHabis', 'Maaf Sekarang Antiran Prioritas', msg);
+        }
 
     });
     socket.on('suara', async (msg) => {
@@ -269,6 +356,26 @@ function displayHello() {
 
 displayHello();
 
+let buffer2 = [];
+let delay2 = 1000;
+function displayHello2() {
+    if (buffer2.length > 0) {
+        console.log(buffer2);
+        let msg = buffer2.shift();
+        let no = msg[0];
+        let loket = msg[1];
+        console.log("ada");
+        io.emit("pangil2", no, loket);
+        delay2 = 7500;
+        setTimeout(displayHello2, delay2);
+    } else {
+        delay2 = 1000;
+        setTimeout(displayHello2, delay2);
+    }
+}
+
+displayHello2();
+
 
 async function totalSisa() {
     let dateNow = new Date().toISOString().slice(0, 10);
@@ -282,6 +389,14 @@ async function totalSisa() {
     });
     io.emit('sisa', sisaAntrian);
     let sisaAntrianprioritas = await Antrian_loket_prioritas.count({
+        where: {
+            createdAt: {
+                [Op.startsWith]: dateNow
+            },
+            updatedAt: null
+        }
+    });
+    let sisaAntrianAtas = await Antrian_loket_a.count({
         where: {
             createdAt: {
                 [Op.startsWith]: dateNow
@@ -303,9 +418,18 @@ async function totalSisa() {
             }
         }
     });
+    let antrian_atas = await Antrian_loket_a.count({
+        where: {
+            createdAt: {
+                [Op.startsWith]: dateNow
+            }
+        }
+    });
     io.emit('nomor_antri', antrian);
     io.emit('nomor_antri_prioritas', antrian_prioritas);
+    io.emit('nomor_antri_atas', antrian_atas);
     io.emit('sisa_prioritas', sisaAntrianprioritas);
+    io.emit('sisa_atas', sisaAntrianAtas);
     let totalsisa = sisaAntrian + sisaAntrianprioritas;
     io.emit('totalsisa', totalsisa);
 }

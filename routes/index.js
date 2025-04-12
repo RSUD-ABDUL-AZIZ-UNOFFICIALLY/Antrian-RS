@@ -5,7 +5,15 @@ const controller = require('../controllers');
 
 router.get('/', (req, res) => {
     // res.send('Hello World!')
+    res.render('index2', { title: "ANTREAN LOKET" })
+})
+router.get('/2', (req, res) => {
+// res.send('Hello World!')
     res.render('index', { title: "ANTREAN LOKET" })
+})
+router.get('/a', (req, res) => {
+    // res.send('Hello World!')
+    res.render('indexA', { title: "ANTREAN LOKET" })
 })
 router.get('/cetak', auth.cekLogin, controller.cetakAntriann);
 
