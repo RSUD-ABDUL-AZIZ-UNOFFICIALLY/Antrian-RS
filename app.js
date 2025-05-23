@@ -312,15 +312,15 @@ io.on('connection', async (socket) => {
         }
     });
     socket.on('reset_loket', async (msg) => {
-        for (let index = 1; index < 5; index++) {
-            io.emit('loket', index, 0);
-            // updateDisplay(index, 0, null)
+        let findAllDisplay = await Display.findAll();
+        for (let x of findAllDisplay) {
+            io.emit('loket', x.loket, 0);
             await Display.update({ nomor: 0, status: null }, {
                 where: {
-                    loket: index
+                    id: x.id
                 }
             });
-         }
+        }
     });
 });
 let buffer = [];
