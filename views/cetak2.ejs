@@ -73,7 +73,10 @@
     <!-- <div class="video-section">
         <iframe src="https://www.youtube.com/embed/example" frameborder="0" allowfullscreen></iframe>
     </div> -->
-    <script>
+      <script src="/asset/js/swiper-bundle.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+        <script src="/asset/js/cetak2.js"></script>
+           <script>
       async function updateFoto() {
         try {
           const response = await fetch('/edit/image');
@@ -106,11 +109,14 @@
       }
       // Call updateFoto initially to load the images
       updateFoto();
- 
+     socket.on('receive_message', (data) => {
+    console.log(data);
+    if (data.command === 'UpdateImage') {
+      console.log("Update Image");
+         updateFoto();
+    }
+    });
 </script>
-      <script src="/asset/js/swiper-bundle.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-        <script src="/asset/js/cetak2.js"></script>
 <script>
     setInterval(() => {
         var attBul = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]

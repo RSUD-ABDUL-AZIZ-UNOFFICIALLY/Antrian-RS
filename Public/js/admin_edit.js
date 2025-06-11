@@ -74,6 +74,7 @@ document.getElementById('imageForm').addEventListener('submit', function (e) {
         })
         .then(data => {
             console.log('Upload sukses:', data);
+            socket.emit('send_message', { 'command': 'UpdateImage' });
             Swal.fire({
                 title: 'Berhasil!',
                 text: 'Gambar telah diunggah.',
