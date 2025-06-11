@@ -30,6 +30,7 @@ const swiper = new Swiper(".listFoto", {
 });
 async function hapusFoto(url) {
     try {
+        console.log(url);
         const response = await fetch('/edit/image', {
             method: 'DELETE',
             headers: {

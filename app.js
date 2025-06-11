@@ -59,7 +59,7 @@ io.on('connection', async (socket) => {
     }
 
     socket.on('next_antrian', async (msg) => {
-        let dateNow = new Date().toISOString().slice(0, 10);
+        let dateNow = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
         let last = await Antrian_loket.findOne({
             where: {
                 createdAt: {
@@ -94,7 +94,7 @@ io.on('connection', async (socket) => {
 
     });
     socket.on('next_antrian_prioritas', async (msg) => {
-        let dateNow = new Date().toISOString().slice(0, 10);
+        let dateNow = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
         let last = await Antrian_loket_prioritas.findOne({
             where: {
                 createdAt: {
@@ -129,7 +129,7 @@ io.on('connection', async (socket) => {
 
     });
     socket.on('next_antrian_atas', async (msg) => {
-        let dateNow = new Date().toISOString().slice(0, 10);
+        let dateNow = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
         let last = await Antrian_loket_a.findOne({
             where: {
                 createdAt: {
@@ -164,7 +164,8 @@ io.on('connection', async (socket) => {
 
     });
     socket.on('cetak_antri', async (msg) => {
-        let dateNow = new Date().toISOString().slice(0, 10);
+        let dateNow = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
+        console.log(dateNow);
         let last = await Antrian_loket.findOne({
             where: {
                 createdAt: {
@@ -177,6 +178,7 @@ io.on('connection', async (socket) => {
             attributes: ['nomor_antri']
         });
         let nomor_antri = last == null ? 1 : last.nomor_antri + 1;
+        console.log(nomor_antri);
         await Antrian_loket.create({
             nomor_antri: nomor_antri,
             createdAt: new Date(),
@@ -197,7 +199,7 @@ io.on('connection', async (socket) => {
         io.emit('btnCetak', false);
     });
     socket.on('cetak_antri_prioritas', async (msg) => {
-        let dateNow = new Date().toISOString().slice(0, 10);
+        let dateNow = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
         let last = await Antrian_loket_prioritas.findOne({
             where: {
                 createdAt: {
@@ -231,7 +233,7 @@ io.on('connection', async (socket) => {
 
     });
     socket.on('cetak_antri_atas', async (msg) => {
-        let dateNow = new Date().toISOString().slice(0, 10);
+        let dateNow = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
         let last = await Antrian_loket_a.findOne({
             where: {
                 createdAt: {
@@ -301,7 +303,7 @@ io.on('connection', async (socket) => {
 
     });
     socket.on('suara_prioritas', async (msg) => {
-        let dateNow = new Date().toISOString().slice(0, 10);
+        let dateNow = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
         let queueNow = await Display.findOne({
             where: {
                 loket: msg,
@@ -385,7 +387,7 @@ displayHello2();
 
 
 async function totalSisa() {
-    let dateNow = new Date().toISOString().slice(0, 10);
+    let dateNow = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
     let sisaAntrian = await Antrian_loket.count({
         where: {
             createdAt: {

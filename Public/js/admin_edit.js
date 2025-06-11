@@ -93,7 +93,7 @@ document.getElementById('imageForm').addEventListener('submit', function (e) {
                 slide.innerHTML = `
             <div class="relative group">
                 <img src="/asset/content/${item}" class="w-full h-128 object-cover rounded" alt="Foto${item}" />
-                <button class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition" onclick="hapusFoto('${item.url}')">×</button>
+                <button class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition" onclick="hapusFoto('/asset/content/${item}')">×</button>
             </div>`;
                 swiperListFoto.appendChild(slide);
             });
@@ -160,7 +160,7 @@ document.getElementById('videoForm').addEventListener('submit', function (e) {
                  slide.innerHTML = `
                     <div class="relative group">
                         <video src="/asset/content/${item}" class="w-full h-40 rounded-lg border" controls></video>
-                        <button class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition" onclick="hapusVideo('${item.url}')">×</button>
+                        <button class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition" onclick="hapusVideo('/asset/content/${item}')">×</button>
                     </div>`;
             videoContainer.appendChild(slide);
             });
