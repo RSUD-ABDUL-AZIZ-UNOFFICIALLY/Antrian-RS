@@ -4,3 +4,5 @@ package-lock.json
 .env
 **/daemon
 resume.json
+/public/cache/*
+!/public/cache/.gitkeep

@@ -35,5 +35,9 @@ module.exports = {
         }
         console.log('bukan admin cetak');
         return res.redirect('/login');
+    },
+    ediDisplay: (req, res) => {
+        res.render('editDisplay', { title: "Edit Display" })
     }
+
 };

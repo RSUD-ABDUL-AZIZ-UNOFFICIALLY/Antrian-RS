@@ -28,17 +28,24 @@ const { cetakAntrian } = require('./usb.js');
 app.use("/asset/js/", express.static(path.join(__dirname + '/Public/js/')));
 app.use("/asset/img/", express.static(path.join(__dirname + '/Public/img/')));
 app.use("/asset/css/", express.static(path.join(__dirname + '/Public/css/')));
+app.use("/asset/content/", express.static(path.join(__dirname + '/Public/cache/')));
 app.use("/asset/audio/", express.static(path.join(__dirname + '/Public/audio/')));
 app.use("/asset/fonts/", express.static(path.join(__dirname + '/Public/fonts/')));
 // app.use(express.static('public'))
 
 const routes = require('./routes');
+const { ms } = require('date-fns/locale');
 app.use('/', routes);
 
 
 
 io.on('connection', async (socket) => {
     console.log('a user connected');
+    // Terima pesan dari client A
+    socket.on('send_message', (msg) => {
+        console.log(`Message from client A: ${msg}`);
+        io.emit('receive_message', msg);
+    });
 
     totalSisa();
     let display = await Display.findAll();

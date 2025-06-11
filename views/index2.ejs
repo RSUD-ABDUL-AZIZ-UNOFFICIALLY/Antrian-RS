@@ -54,9 +54,18 @@
 
     <!-- Gambar (opsional) -->
     <div class="bg-gray-100 border shadow rounded-lg flex items-center justify-center p-4">
-        <video id="videos" controls autoplay loop muted="muted">
-            <source id="video" src="/asset/audio/pendaftaran.mp4" type="video/mp4">
-        </video>
+         <div class="rounded-lg overflow-hidden shadow-lg">
+    <video
+      id="videos"
+      controls
+      autoplay
+      muted
+      playsinline
+    >
+      <source src="/asset/audio/pendaftaran.mp4" type="video/mp4" />
+      Maaf, browser Anda tidak mendukung pemutar video.
+    </video>
+  </div>
     </div>
 
     <!-- Loket 4 -->
@@ -65,17 +74,108 @@
       <p class="text-black text-9xl font-extrabold" id="4">x</p>
     </div>
   </div>
+  <!-- Running Text -->
+<div class="fixed bottom-0 w-full bg-blue-600 py-2 overflow-hidden z-50">
+  <div class="relative whitespace-nowrap" id="runningTextContainer">
+  </div>
+</div>
 
     <!-- <div class="video-section">
         <iframe src="https://www.youtube.com/embed/example" frameborder="0" allowfullscreen></iframe>
     </div> -->
 <script src="/asset/js/audio2.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<style>
+   @keyframes marqueeLoop {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .marquee-loop {
+    animation: marqueeLoop 15s linear infinite;
+  }
+  
+</style>
+<script>
+   async function updateRunningText() {
+     await fetch('/edit/message')
+       .then(response => response.json())
+       .then(data => {
+        const runningTextContainer = document.getElementById('runningTextContainer');
+        runningTextContainer.innerHTML = ''; // Clear previous content
+        if (data.message.length <= 100) {
+        for (let i = 0; i < 4; i++) {
+            const runningText = document.createElement('div');
+            runningText.className = 'marquee-loop inline-block text-white text-sm font-medium px-4';
+            runningText.innerHTML = data.message;
+            runningTextContainer.appendChild(runningText);
+        }
+        } else if (data.message.length > 100) {
+         for (let i = 0; i < 3; i++) {
+            const runningText = document.createElement('div');
+            runningText.className = 'marquee-loop inline-block text-white text-sm font-medium px-4';
+            runningText.innerHTML = data.message;
+            runningTextContainer.appendChild(runningText);
+        }
+        } else {
+          console.error('No message found in response');
+        }
+       })
+       .catch(error => console.error('Error fetching running text:', error));
+   }
+   updateRunningText();
+
+   async function updateVideo() {
+        let currentIndex = 0;
+            let playlist = [];
+            await fetch('/edit/video')
+                  .then(response => response.json())
+                  .then(data => {
+                    for (let url  of data) {
+                      playlist.push("/asset/content/"+url.url);
+                    }
+                  })
+                .catch(error => console.error('Error fetching video:', error));
+        let videoPlayer = document.getElementById("videos");
+              console.log(videoPlayer);
+              console.log(playlist);
+              console.log(playlist.length);
+
+            videoPlayer.addEventListener("ended", () => {
+            console.log("Video ended, switching to next video.");
+            currentIndex = (currentIndex + 1) % playlist.length; // Loop kembali ke awal
+            videoPlayer.src = playlist[currentIndex];
+            videoPlayer.play();
+          });
+  
+}
+updateVideo();
+ 
+</script>
 <script>
     const socket = io();
+    socket.on('receive_message', (data) => {
+    console.log(data);
+    if (data.command === 'UpdateRunningText') {
+      console.log("Update Running Text");
+         updateRunningText();
+    }
+    if (data.command === 'UpdateVideo') {
+      console.log("Update Video");
+         updateVideo();
+    }
+    });
     socket.on('loket', (msg, nomor_antri) => {
-
+      try {
         document.getElementById(msg).innerHTML = nomor_antri;
+      } catch (error) {
+                  
+      }
+       
     });
     // Prioritas
     socket.on('loket_prioritas', (msg, nomor_antri) => {
@@ -141,6 +241,8 @@
             angka(loket)
         }, 6900);}
     });
+
+
 </script>
 <script>
     setInterval(() => {

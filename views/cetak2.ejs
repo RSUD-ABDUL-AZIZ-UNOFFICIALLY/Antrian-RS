@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CETAK ANTRIAN</title>
     <link href="/asset/css/main.css" rel="stylesheet">
+    <link href="/asset/css/swiper-bundle.min.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -24,44 +25,90 @@
   <div class="bg-teal-600 text-white text-center py-2 font-bold text-3xl">
     CETAK ANTRIAN
   </div>
-  <div class="px-4 h-screen flex items-center justify-center">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
-
-      <!-- Umum -->
-      <div class="bg-white p-6 rounded-xl shadow">
-        <h2 class="text-xl font-bold text-blue-700 mb-4">Antrian</h2>
-        <p class="text-3xl mb-2">Sisa : <span id="sisa">38</span></p>
-        <button onclick="cetak('cetak_antri')"  class="btn-antrian bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl text-xl w-full transition">
-          Cetak Antrian ke : <span id="next_antrian">39</span>
-        </button>
+  <!-- Foto/Swiper di Tengah -->
+<div class="flex justify-center my-8">
+  <div class="w-[640px] h-[360px] rounded-xl overflow-hidden shadow-lg">
+    <div class="swiper mySwiper w-full h-full">
+      <div class="swiper-wrapper">
+      
       </div>
-
-      <!-- BPJS -->
-      <div class="bg-white p-6 rounded-xl shadow">
-        <h2 class="text-xl font-bold text-green-700 mb-4">Antrian Poli Atas</h2>
-        <p class="text-3xl mb-2">Sisa : <span id="sisa_anrian_atas">24</span></p>
-        <button onclick="cetak('cetak_antri_atas')"  class="btn-antrian bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl text-xl w-full transition">
-          Cetak Antrian ke : <span id="next_antrian_atas"></span>
-        </button>
-      </div>
-
-      <!-- Prioritas -->
-      <div class="bg-white p-6 rounded-xl shadow">
-        <h2 class="text-xl font-bold text-red-700 mb-4">Antrian Prioritas</h2>
-        <p class="text-3xl mb-2">Sisa : <span id="sisa_prioritas">5</span></p>
-        <button onclick="cetak('cetak_antri_prioritas')" class="btn-antrian bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-xl text-xl w-full transition">
-          Cetak Antrian Prioritas ke : <span id="next_antrian_prioritas"></span>
-        </button>
-      </div>
-
     </div>
   </div>
+</div>
 
+<!-- Kartu Cetak Antrian -->
+<div class="px-4 pb-10">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+    <!-- Antrian Umum -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-blue-700 mb-4">Antrian</h2>
+      <p class="text-3xl mb-2">Sisa : <span id="sisa">38</span></p>
+      <button onclick="cetak('cetak_antri')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl text-xl w-full transition">
+        Cetak Antrian ke : <span id="next_antrian">39</span>
+      </button>
+    </div>
+
+    <!-- Antrian Poli Atas -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-green-700 mb-4">Antrian Poli Atas</h2>
+      <p class="text-3xl mb-2">Sisa : <span id="sisa_anrian_atas">24</span></p>
+      <button onclick="cetak('cetak_antri_atas')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl text-xl w-full transition">
+        Cetak Antrian ke : <span id="next_antrian_atas"></span>
+      </button>
+    </div>
+
+    <!-- Antrian Prioritas -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-red-700 mb-4">Antrian Prioritas</h2>
+      <p class="text-3xl mb-2">Sisa : <span id="sisa_prioritas">5</span></p>
+      <button onclick="cetak('cetak_antri_prioritas')" class="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-xl text-xl w-full transition">
+        Cetak Antrian Prioritas ke : <span id="next_antrian_prioritas"></span>
+      </button>
+    </div>
+  </div>
+</div>
+    <!-- <div class="flex justify-center my-8"> -->
   <!-- Bagian: Sisa Antrian -->
  
     <!-- <div class="video-section">
         <iframe src="https://www.youtube.com/embed/example" frameborder="0" allowfullscreen></iframe>
     </div> -->
+    <script>
+      async function updateFoto() {
+        try {
+          const response = await fetch('/edit/image');
+          const data = await response.json();
+          const swiperWrapper = document.querySelector('.swiper-wrapper');
+          swiperWrapper.innerHTML = ''; // Clear existing slides
+          data.forEach((foto, index) => {
+            console.log(foto);
+            const slide = document.createElement('div');
+            slide.className = 'swiper-slide';
+            slide.innerHTML = `<img src="/asset/content/${foto.url}" alt="Foto ${index + 1}" class="w-full h-full object-cover">`;
+            swiperWrapper.appendChild(slide);
+          });
+
+          // Reinitialize Swiper after updating slides
+          // swiper.update();
+           const swiper = new Swiper(".mySwiper", {
+    loop: true,
+    autoplay: {
+      delay: 1000,
+      disableOnInteraction: true,
+    },
+    speed: 1000,
+    effect: 'slide',
+  });
+        } catch (error) {
+          console.error('Error fetching foto:', error);
+        }
+        
+      }
+      // Call updateFoto initially to load the images
+      updateFoto();
+ 
+</script>
+      <script src="/asset/js/swiper-bundle.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
         <script src="/asset/js/cetak2.js"></script>
 <script>
@@ -79,8 +126,7 @@
         document.getElementById('waktu').innerHTML =jam+":"+menit+":"+detik
         document.getElementById('tanggal').innerHTML = attHar[hari]+" ,"+tanggal+" "+attBul[bulan]+" "+tahun
     }, 1000);
-</script>
+  </script>
+<script src="/asset/js/cetak.js"></script>
 </body>
 </html>
-
-        <script src="/asset/js/cetak.js"></script>
