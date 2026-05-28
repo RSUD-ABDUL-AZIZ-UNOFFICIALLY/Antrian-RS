@@ -70,7 +70,7 @@ const cetakAntrian = function (nomor_antri) {
     return true;
 
 }
-cetakAntrian('A001');
+cetakAntrian('MULAI-OKE');
 module.exports = {
     cetakAntrian
 }
