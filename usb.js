@@ -1,7 +1,7 @@
 require('dotenv').config();
 const escpos = require('escpos');
 const e = require('express');
-escpos.USB = require('escpos-usb');
+// escpos.USB = require('escpos-usb');
 escpos.Network = require('escpos-network');
 
 
@@ -10,18 +10,19 @@ const cetakAntrian = function (nomor_antri) {
     let date_now = date.getDate() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + date.getFullYear();
     let time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     try {
-        const devices = escpos.USB.findPrinter();
-        console.log(devices)
-        let device = [];
-        if (devices.length === 0) {
-            console.log('Printer tidak ditemukan');
-            console.log(process.env.PRINTER_IP);
-            device = new escpos.Network(process.env.PRINTER_IP);
+        // const devices = escpos.USB.findPrinter();
+        // console.log(devices)
+        // let device = [];
+        // if (devices.length === 0) {
+        //     console.log('Printer tidak ditemukan');
+        //     console.log(process.env.PRINTER_IP);
+        //     device = new escpos.Network(process.env.PRINTER_IP);
 
-        } else {
-            console.log('Printer ditemukan');
-            device = new escpos.USB();
-        }
+        // } else {
+        //     console.log('Printer ditemukan');
+        //     device = new escpos.USB();
+        // }
+        const device = new escpos.Network('process.env.PRINTER_IP', 9100);
         // const options = { encoding: "GB18030" /* default */ }
         const options = { encoding: "EUC-KR" /* default */ }
         // const device = new escpos.USB();   
