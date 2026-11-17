@@ -4,70 +4,74 @@ const escpos = require('escpos');
 escpos.Network = require('escpos-network');
 const { createCanvas, registerFont } = require('canvas');
 
-// Daftarkan font Roboto sebelum membuat canvas
 registerFont(path.join(__dirname, 'fonts', 'Roboto-Regular.ttf'), { family: 'Roboto', weight: 'normal' });
 registerFont(path.join(__dirname, 'fonts', 'Roboto-Bold.ttf'), { family: 'Roboto', weight: 'bold' });
 
-function buatGambarStruk(nomor_antri, date_now, time) {
-    const width = 576;  // Lebar maksimal area cetak Epson TM-T82X (80mm @ 203 DPI)
-    const height = 560; // Sesuaikan tinggi kanvas agar tidak ada ruang kosong berlebih
+function buatGambarStrukPadat(nomor_antri, date_now, time) {
+    const width = 576;  // Lebar area cetak TM-T82X (80mm)
+    const height = 350; // Lebih pendek ~37% dari versi sebelumnya
 
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    // Latar belakang putih solid
+    // Latar belakang putih bersih
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, width, height);
 
-    // Pengaturan teks hitam pekat (tanpa abu-abu agar hasil thermal tajam)
     ctx.fillStyle = '#000000';
-    ctx.textAlign = 'center';
     const centerX = width / 2;
+    const marginX = 16;
 
-    // Header RSUD
-    ctx.font = 'bold 28px "Roboto"';
-    ctx.fillText('RSUD dr. Abdul Aziz', centerX, 45);
+    // 1. HEADER PADAT (RSUD + Kota)
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 24px "Roboto"';
+    ctx.fillText('RSUD dr. Abdul Aziz - Kota Singkawang', centerX, 32);
 
-    ctx.font = 'normal 22px "Roboto"';
-    ctx.fillText('Kota Singkawang', centerX, 78);
-
-    // Garis pemisah atas
+    // Garis pemisah tipis
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(20, 100);
-    ctx.lineTo(width - 20, 100);
+    ctx.moveTo(marginX, 46);
+    ctx.lineTo(width - marginX, 46);
     ctx.stroke();
 
-    // Label Nomor Antrian
-    ctx.font = 'normal 22px "Roboto"';
-    ctx.fillText('Nomor Antrian', centerX, 140);
+    // 2. LABEL & NOMOR ANTRIAN (Fokus Utama)
+    ctx.font = 'bold 20px "Roboto"';
+    ctx.fillText('NOMOR ANTRIAN', centerX, 76);
 
-    // Nomor Antrian Besar
-    ctx.font = 'bold 96px "Roboto"';
-    ctx.fillText(nomor_antri, centerX, 245);
+    ctx.font = 'bold 88px "Roboto"';
+    ctx.fillText(nomor_antri, centerX, 162);
+
+    // Garis pemisah putus-putus
+    ctx.setLineDash([6, 4]);
+    ctx.beginPath();
+    ctx.moveTo(marginX, 185);
+    ctx.lineTo(width - marginX, 185);
+    ctx.stroke();
+    ctx.setLineDash([]); // Reset garis solid
+
+    // 3. INFO LAYANAN & WAKTU (Sejajar Kiri - Kanan dalam 1 Baris)
+    ctx.font = 'bold 20px "Roboto"';
+    ctx.textAlign = 'left';
+    ctx.fillText('Pasien Rawat Jalan', marginX, 218);
+
+    ctx.font = 'normal 19px "Roboto"';
+    ctx.textAlign = 'right';
+    ctx.fillText(`${date_now} | ${time}`, width - marginX, 218);
 
     // Garis pemisah bawah
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.moveTo(20, 280);
-    ctx.lineTo(width - 20, 280);
+    ctx.moveTo(marginX, 234);
+    ctx.lineTo(width - marginX, 234);
     ctx.stroke();
 
-    // Kategori Layanan (dengan garis bawah manual)
-    ctx.font = 'bold 24px "Roboto"';
-    const teksPoli = 'Pasien Rawat Jalan';
-    ctx.fillText(teksPoli, centerX, 325);
-    const textWidth = ctx.measureText(teksPoli).width;
-    ctx.fillRect(centerX - textWidth / 2, 332, textWidth, 2);
+    // 4. FOOTER RINGKAS
+    ctx.textAlign = 'center';
+    ctx.font = 'normal 17px "Roboto"';
+    ctx.fillText('*Ambil kembali antrian jika terlewat*', centerX, 264);
 
-    // Tanggal & Waktu
-    ctx.font = 'normal 20px "Roboto"';
-    ctx.fillText(`Tanggal Antrian : ${date_now} ${time}`, centerX, 385);
-
-    // Footer Catatan
-    ctx.font = 'normal 18px "Roboto"';
-    ctx.fillText('*Mengambil kembali Antrian, Jika Terlewat*', centerX, 445);
-    ctx.font = 'bold 20px "Roboto"';
-    ctx.fillText('*Semoga Sehat Selalu*', centerX, 480);
+    ctx.font = 'bold 18px "Roboto"';
+    ctx.fillText('Semoga Sehat Selalu', centerX, 290);
 
     return canvas.toDataURL('image/png');
 }
@@ -85,7 +89,7 @@ const cetakAntrian = function (nomor_antri) {
             return reject(new Error('PRINTER_IP belum diatur di file .env'));
         }
 
-        const dataUrl = buatGambarStruk(nomor_antri, date_now, time);
+        const dataUrl = buatGambarStrukPadat(nomor_antri, date_now, time);
 
         escpos.Image.load(dataUrl, function (image) {
             const device = new escpos.Network(printerIp, 9100);
@@ -99,14 +103,14 @@ const cetakAntrian = function (nomor_antri) {
 
                 printer
                     .align('ct')
-                    .raster(image) // Cetak gambar dalam mode raster (lebih cepat & tajam di TM-T82X)
-                    .feed(2)
+                    .raster(image)
+                    .feed(1) // Cukup 1 feed karena bagian bawah kanvas sudah punya sisa ruang aman untuk pisau cutter
                     .cut();
 
                 setTimeout(() => {
                     printer.close();
                     resolve(true);
-                }, 400);
+                }, 350);
             });
         });
     });
@@ -116,7 +120,7 @@ const cetakAntrian = function (nomor_antri) {
 (async () => {
     try {
         await cetakAntrian('A-001');
-        console.log('Struk Roboto berhasil dicetak');
+        console.log('Struk hemat kertas berhasil dicetak');
     } catch (err) {
         console.error('Gagal cetak:', err.message);
     }
