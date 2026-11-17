@@ -22,9 +22,9 @@ const cetakAntrian = function (nomor_antri) {
         //     console.log('Printer ditemukan');
         //     device = new escpos.USB();
         // }
-        const device = new escpos.Network('process.env.PRINTER_IP', 9100);
+        const device = new escpos.Network(process.env.PRINTER_IP, 9100);
         // const options = { encoding: "GB18030" /* default */ }
-        const options = { encoding: "EUC-KR" /* default */ }
+        const options = { encoding: "CP437" /* default */ }
         // const device = new escpos.USB();   
         // console.log(device)
         const printer = new escpos.Printer(device, options);
